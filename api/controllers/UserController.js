@@ -48,17 +48,16 @@ module.exports = {
       return res.send(error.details);
     }
 
-    const { email } = req.body;
+    const { email ,password } = req.body;
 
-    const user = await User.findAll({where : {email}})
-    console.log(user);
+    const user = await User.findAll({where : {email, password}})
     if (user) {
       req.user = user;
       return res.status(HTTP_STATUS_CODE.OK).json({
         status: HTTP_STATUS_CODE.OK,
         errorCode: "",
         message: MESSAGES.OK,
-        data: "",
+        data: req.user,
         error: "",
       });
     } else {

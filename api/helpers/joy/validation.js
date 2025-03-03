@@ -8,7 +8,8 @@ const signupSchema = Joi.object({
 })  
 
 const loginSchema = Joi.object({
-    email: Joi.string().email()
+    email: Joi.string().email(),
+    password : Joi.string()
 })
 
 const createJobValidation = Joi.object({
@@ -22,6 +23,27 @@ const createJobValidation = Joi.object({
     totalAmount : Joi.string(),
 })
 
+const applyJob = Joi.object({
+    userId : Joi.string(),
+    title : Joi.string(),
+    startDate : Joi.date(),
+    endDate : Joi.date(),
+    amountPerHr : Joi.number(),
+    startTime : Joi.number(),
+    endTime : Joi.number(),
+    jobDescription : Joi.string(),
+    totalAmount : Joi.string(),
+    isAccepted : Joi.boolean()
+})
+
+const jobReqValidstion = Joi.object({
+    jobId : Joi.string(),
+    userId : Joi.string()
+})
+
+
 exports.validationSignup = validator(signupSchema)
 exports.validationLogin = validator(loginSchema)
 exports.validationCreateJob = validator(createJobValidation)
+exports.validationJobApply = validator(applyJob)
+exports.validationJobRequest = validator(jobReqValidstion)
