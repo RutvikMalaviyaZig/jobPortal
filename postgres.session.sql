@@ -1,0 +1,52 @@
+-- CREATE EXTENSION IF NOT EXISTS "uuid-ossp";
+
+-- CREATE TABLE "users" (
+--     "id" UUID PRIMARY KEY DEFAULT uuid_generate_v4 (),
+--     "email" VARCHAR(255) UNIQUE NOT NULL,
+--     "password" VARCHAR(255) NOT NULL,
+--     "createdAt" TIMESTAMP NOT NULL,
+--     "updatedAt" TIMESTAMP NOT NULL,
+--     "deletedAt" TIMESTAMP
+-- );
+
+-- CREATE TABLE "jobs" (
+--     "id" UUID PRIMARY KEY DEFAULT uuid_generate_v4 (),
+--     "title" VARCHAR(255) NOT NULL,
+--     "startDate" TIMESTAMP NOT NULL,
+--     "endDate" TIMESTAMP NOT NULL,
+--     "amountPerHr" INTEGER NOT NULL,
+--     "startTime" INTEGER NOT NULL,
+--     "endTime" INTEGER NOT NULL,
+--     "totalAmount" VARCHAR(255),
+--     "isAccepted" BOOLEAN DEFAULT FALSE,
+--     "createdAt" TIMESTAMP NOT NULL,
+--     "updatedAt" TIMESTAMP NOT NULL,
+--     "deletedAt" TIMESTAMP
+-- );
+
+-- CREATE TABLE "jobApplicant" (
+--     "id" UUID PRIMARY KEY DEFAULT uuid_generate_v4 (),
+--     "userId" UUID REFERENCES "users" ("id") ON DELETE CASCADE,
+--     "jobId" UUID REFERENCES "jobs" ("id") ON DELETE CASCADE,
+--     "startDate" TIMESTAMP NOT NULL,
+--     "endDate" TIMESTAMP NOT NULL,
+--     "amountPerHr" VARCHAR(255) NOT NULL,
+--     "startTime" INTEGER NOT NULL,
+--     "endTime" INTEGER NOT NULL,
+--     "totalAmount" VARCHAR(255),
+--     "isAccepted" BOOLEAN DEFAULT FALSE,
+--     "createdAt" TIMESTAMP NOT NULL,
+--     "updatedAt" TIMESTAMP NOT NULL,
+--     "deletedAt" TIMESTAMP
+-- );
+
+-- CREATE TABLE "acceptedJob" (
+--     "id" UUID PRIMARY KEY DEFAULT uuid_generate_v4 (),
+--     "userId" UUID REFERENCES "users" ("id") ON DELETE CASCADE,
+--     "jobId" UUID REFERENCES "jobs" ("id") ON DELETE CASCADE,
+--     "startDate" TIMESTAMP,
+--     "endDate" TIMESTAMP,
+--     "createdAt" TIMESTAMP NOT NULL,
+--     "updatedAt" TIMESTAMP NOT NULL,
+--     "deletedAt" TIMESTAMP
+-- );
