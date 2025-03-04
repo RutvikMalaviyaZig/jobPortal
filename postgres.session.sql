@@ -19,6 +19,7 @@
 --     "endTime" INTEGER NOT NULL,
 --     "totalAmount" VARCHAR(255),
 --     "isAccepted" BOOLEAN DEFAULT FALSE,
+--     "createdBy" UUID REFERENCES "users" ("id") ON DELETE CASCADE,
 --     "createdAt" TIMESTAMP NOT NULL,
 --     "updatedAt" TIMESTAMP NOT NULL,
 --     "deletedAt" TIMESTAMP

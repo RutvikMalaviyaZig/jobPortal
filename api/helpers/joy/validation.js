@@ -38,8 +38,11 @@ const applyJob = Joi.object({
 
 const jobReqValidstion = Joi.object({
     jobId : Joi.string(),
-    userId : Joi.string()
+    userId : Joi.string(),
+   startDate : Joi.date(),
+    endDate : Joi.date()
 })
+
 
 
 exports.validationSignup = validator(signupSchema)

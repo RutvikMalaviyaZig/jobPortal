@@ -48,6 +48,13 @@ const Job = sequelize.define(
       allowNull: true,
       defaultValue: false,
     },
+    createdBy: {
+      type: DataTypes.UUID,
+      references : {
+        model : "users",
+        key : 'id'
+      }
+    },
     createdAt: {
       allowNull: false,
       type: DataTypes.DATE,
