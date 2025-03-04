@@ -13,8 +13,18 @@ const AcceptedJob = require("../models/AcceptedJob");
 const sendEmail = require("../helpers/mail/sendMail");
 
 module.exports = {
+
+  /**
+   * @name createJob
+   * @file JobController.js
+   * @param {Request} req
+   * @param {Response} res
+   * @description create new job using it's all details
+   */
+
   createJob: async (req, res) => {
-    const { error } = validationCreateJob(req.body);
+  try {
+    const { error } = validationCreateJob(req.body); // validate all fields using joy validator
     if (error) {
       console.log(error);
       return res.send(error.details);
@@ -30,7 +40,7 @@ module.exports = {
       jobDescription,
       isAccepted,
     } = req.body;
-    const userId = req.query.userId;
+    const userId = req.query.userId; 
     if (!userId) {
       return res.status(HTTP_STATUS_CODE.BAD_REQUEST).json({
         status: HTTP_STATUS_CODE.BAD_REQUEST,
@@ -51,7 +61,7 @@ module.exports = {
     const totalHoursPerDay = endTime - startTime;
 
     // Calculate total earnings
-    const totalMoney = dateDifferenceInDays * totalHoursPerDay * amountPerHr;
+    const totalMoney = dateDifferenceInDays * totalHoursPerDay * amountPerHr; 
 
     // create pauload for create job
     const payload = {
@@ -76,10 +86,28 @@ module.exports = {
       data: newJob,
       error: "",
     });
+  } catch (error) {
+    return res.status(HTTP_STATUS_CODE.INTERNAL_SERVER_ERROR).json({
+      status: HTTP_STATUS_CODE.INTERNAL_SERVER_ERROR,
+      errorCode: "",
+      message: MESSAGES.INTERNAL_SERVER_ERROR,
+      data: "",
+      error: "",
+    });
+  }
   },
 
+
+  /**
+   * @name listJobs
+   * @file JobController.js
+   * @param {Request} req
+   * @param {Response} res
+   * @description list all jobs 
+   */
   listJobs: async (req, res) => {
-    const allJobs = await Job.findAll();
+    try {
+      const allJobs = await Job.findAll(); // find all job 
     if (!allJobs) {
       return res.status(HTTP_STATUS_CODE.BAD_REQUEST).json({
         status: HTTP_STATUS_CODE.BAD_REQUEST,
@@ -97,9 +125,27 @@ module.exports = {
       data: allJobs,
       error: "",
     });
+    } catch (error) {
+      return res.status(HTTP_STATUS_CODE.INTERNAL_SERVER_ERROR).json({
+        status: HTTP_STATUS_CODE.INTERNAL_SERVER_ERROR,
+        errorCode: "",
+        message: MESSAGES.INTERNAL_SERVER_ERROR,
+        data: "",
+        error: "",
+      });
+    }
   },
 
+
+  /**
+   * @name applyForJob
+   * @file JobController.js
+   * @param {Request} req
+   * @param {Response} res
+   * @description  user can apply in job and also do modification if want and apply
+   */
   applyForJob: async (req, res) => {
+   try {
     const { error } = validationJobApply(req.body);
     if (error) {
       console.log(error);
@@ -118,7 +164,7 @@ module.exports = {
     } = req.body;
 
     const jobId = req.query.jobId;
-
+    // find job using the jobId
     const checkJobId = await Job.findOne({ where: { id: jobId } });
     if (!checkJobId) {
       return res.status(HTTP_STATUS_CODE.BAD_REQUEST).json({
@@ -157,7 +203,7 @@ module.exports = {
       isAccepted,
     };
 
-    const storeInDB = await JobApplicant.create(payload);
+    const storeInDB = await JobApplicant.create(payload); // store this apply request in JobApplicant table
     if (!storeInDB) {
       return res.status(HTTP_STATUS_CODE.BAD_REQUEST).json({
         status: HTTP_STATUS_CODE.BAD_REQUEST,
@@ -175,9 +221,26 @@ module.exports = {
       data: storeInDB,
       error: "",
     });
+   } catch (error) {
+    return res.status(HTTP_STATUS_CODE.INTERNAL_SERVER_ERROR).json({
+      status: HTTP_STATUS_CODE.INTERNAL_SERVER_ERROR,
+      errorCode: "",
+      message: MESSAGES.INTERNAL_SERVER_ERROR,
+      data: "",
+      error: "",
+    });
+   }
   },
 
+  /**
+   * @name acceptJobRequest
+   * @file JobController.js
+   * @param {Request} req
+   * @param {Response} res
+   * @description createdBy user accept the job request using userid, jobid, startDate and endDate
+   */
   acceptJobRequest: async (req, res) => {
+  try {
     const { error } = validationJobRequest(req.body);
     if (error) {
       console.log(error);
@@ -202,17 +265,16 @@ module.exports = {
 
     await JobApplicant.update(
       { isAccepted: true },
-      { where: { [Op.and]: [{ jobId }, { userId }] } }
+      { where: { [Op.and]: [{ jobId }, { userId }] } }  // update isAccepted flag in JobApplicant
     );
-    await Job.update({ isAccepted: true }, { where: { id: jobId } });
-
+    await Job.update({ isAccepted: true }, { where: { id: jobId } }); // update isAccepted flag in Job
     const payload = {
       userId,
       jobId,
       startDate,
       endDate,
     };
-    const saveInAcpJob = await AcceptedJob.create(payload);
+    const saveInAcpJob = await AcceptedJob.create(payload); // store this in the AcceptedJob 
     if (!saveInAcpJob) {
       return res.status(HTTP_STATUS_CODE.BAD_REQUEST).json({
         status: HTTP_STATUS_CODE.BAD_REQUEST,
@@ -223,7 +285,7 @@ module.exports = {
       });
     }
 
-    const users = await JobApplicant.findAll({
+    const users = await JobApplicant.findAll({ // find all user for send mail
       where: { jobId },
       include: [
         {
@@ -237,6 +299,7 @@ module.exports = {
       ],
     });
 
+    // take email of user check flag and send mail related to flag
     for (const applicant of users) {
       const email = applicant.user.dataValues.email;
       const subject = applicant.isAccepted
@@ -261,9 +324,27 @@ module.exports = {
       data: saveInAcpJob,
       error: "",
     });
+  } catch (error) {
+    return res.status(HTTP_STATUS_CODE.INTERNAL_SERVER_ERROR).json({
+      status: HTTP_STATUS_CODE.INTERNAL_SERVER_ERROR,
+      errorCode: "",
+      message: MESSAGES.INTERNAL_SERVER_ERROR,
+      data: "",
+      error: "",
+    });
+  }
   },
 
+
+   /**
+   * @name updateJob
+   * @file JobController.js
+   * @param {Request} req
+   * @param {Response} res
+   * @description update the job detalis if job createdBy user want
+   */
   updateJob: async (req, res) => {
+  try {
     const {
       jobId,
       title,
@@ -277,10 +358,10 @@ module.exports = {
     } = req.body;
     const createdBy = req.query.userId;
     if (createdBy) {
-      const findJob = await Job.findAll({
+      const findJob = await Job.findAll({  // find job bu jobId and createdBy 
         where: { [Op.and]: [{ id: jobId }, { createdBy }] },
       });
-      if (findJob) {
+      if (findJob) { // if valid then update the job data 
         const startDateObj = new Date(startDate);
         const endDateObj = new Date(endDate);
 
@@ -329,10 +410,27 @@ module.exports = {
         error: "",
       });
     }
+  } catch (error) {
+    return res.status(HTTP_STATUS_CODE.INTERNAL_SERVER_ERROR).json({
+      status: HTTP_STATUS_CODE.INTERNAL_SERVER_ERROR,
+      errorCode: "",
+      message: MESSAGES.INTERNAL_SERVER_ERROR,
+      data: "",
+      error: "",
+    });
+  }
   },
 
+  /**
+   * @name deleteJob
+   * @file JobController.js
+   * @param {Request} req
+   * @param {Response} res
+   * @description delete the job using jobId and userId and check createdBy is userId
+   */
   deleteJob: async (req, res) => {
-    const { jobId, userId } = req.body;
+    try {
+      const { jobId, userId } = req.body;
     const findJob = await Job.findOne({
       where: { [Op.and]: [{ id: jobId }, { createdBy: userId }] },
     });
@@ -354,5 +452,14 @@ module.exports = {
       data: "",
       error: "",
     });
+    } catch (error) {
+      return res.status(HTTP_STATUS_CODE.INTERNAL_SERVER_ERROR).json({
+        status: HTTP_STATUS_CODE.INTERNAL_SERVER_ERROR,
+        errorCode: "",
+        message: MESSAGES.INTERNAL_SERVER_ERROR,
+        data: "",
+        error: "",
+      });
+    }
   },
 };
