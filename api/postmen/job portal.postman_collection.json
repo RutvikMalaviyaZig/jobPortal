@@ -16,7 +16,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n    \"email\": \"one@gmail.com\"\n}",
+							"raw": "{\n    \"email\": \"two@gmail.com\",\n    \"password\" : \"12345\"\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -44,7 +44,7 @@
 								"header": [],
 								"body": {
 									"mode": "raw",
-									"raw": "{\n    \"email\": \"one@gmail.com\"\n}",
+									"raw": "{\n    \"email\": \"two@gmail.com\",\n    \"password\" : \"12345\"\n}",
 									"options": {
 										"raw": {
 											"language": "json"
@@ -78,15 +78,15 @@
 								},
 								{
 									"key": "Content-Length",
-									"value": "86"
+									"value": "269"
 								},
 								{
 									"key": "ETag",
-									"value": "W/\"56-nn3PPgm6egporT35TwLIH9Og7ko\""
+									"value": "W/\"10d-CLFcasFRp45CKPq1E5ssHkWQOkE\""
 								},
 								{
 									"key": "Date",
-									"value": "Mon, 03 Mar 2025 13:01:28 GMT"
+									"value": "Tue, 04 Mar 2025 05:33:33 GMT"
 								},
 								{
 									"key": "Connection",
@@ -98,7 +98,7 @@
 								}
 							],
 							"cookie": [],
-							"body": "{\n    \"status\": 200,\n    \"errorCode\": \"\",\n    \"message\": \"Request was successful.\",\n    \"data\": \"\",\n    \"error\": \"\"\n}"
+							"body": "{\n    \"status\": 200,\n    \"errorCode\": \"\",\n    \"message\": \"Request was successful.\",\n    \"data\": [\n        {\n            \"id\": \"698f2737-327b-457d-bf19-00df5993dad2\",\n            \"email\": \"two@gmail.com\",\n            \"password\": \"12345\",\n            \"createdAt\": \"2025-03-04T00:02:39.940Z\",\n            \"updatedAt\": \"2025-03-04T00:02:39.940Z\",\n            \"deletedAt\": null\n        }\n    ],\n    \"error\": \"\"\n}"
 						}
 					]
 				},
@@ -109,7 +109,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n    \"email\" : \"one1@gmail.com\",\n    \"password\" : \"12345\"\n}",
+							"raw": "{\n    \"email\" : \"two@gmail.com\",\n    \"password\" : \"12345\"\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -192,6 +192,69 @@
 							],
 							"cookie": [],
 							"body": "{\n    \"status\": 200,\n    \"errorCode\": \"\",\n    \"message\": \"Request was successful.\",\n    \"data\": {\n        \"id\": \"872fcdcf-0e94-4808-96e5-7b39f2b4dd23\",\n        \"email\": \"one1@gmail.com\",\n        \"password\": \"12345\",\n        \"updatedAt\": \"2025-03-03T07:22:10.593Z\",\n        \"createdAt\": \"2025-03-03T07:22:10.593Z\",\n        \"deletedAt\": null\n    },\n    \"error\": \"\"\n}"
+						},
+						{
+							"name": "signup",
+							"originalRequest": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"email\" : \"two@gmail.com\",\n    \"password\" : \"12345\"\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{local}}/api/v1/user/signup",
+									"host": [
+										"{{local}}"
+									],
+									"path": [
+										"api",
+										"v1",
+										"user",
+										"signup"
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "X-Powered-By",
+									"value": "Express"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json; charset=utf-8"
+								},
+								{
+									"key": "Content-Length",
+									"value": "267"
+								},
+								{
+									"key": "ETag",
+									"value": "W/\"10b-5AgPuXZZhFp2qDGSvYktICQRpZU\""
+								},
+								{
+									"key": "Date",
+									"value": "Tue, 04 Mar 2025 05:32:39 GMT"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								},
+								{
+									"key": "Keep-Alive",
+									"value": "timeout=5"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"status\": 200,\n    \"errorCode\": \"\",\n    \"message\": \"Request was successful.\",\n    \"data\": {\n        \"id\": \"698f2737-327b-457d-bf19-00df5993dad2\",\n        \"email\": \"two@gmail.com\",\n        \"password\": \"12345\",\n        \"updatedAt\": \"2025-03-04T00:02:39.940Z\",\n        \"createdAt\": \"2025-03-04T00:02:39.940Z\",\n        \"deletedAt\": null\n    },\n    \"error\": \"\"\n}"
 						}
 					]
 				}
@@ -207,7 +270,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n    \"title\" : \"Mern stack\",\n    \"startDate\" : \"03-\"\n}",
+							"raw": "{\n    \"title\" : \"web developer\",\n    \"startDate\" : \"2025-03-03\",\n    \"endDate\" : \"2025-03-10\",\n    \"amountPerHr\" : 40,\n    \"startTime\" : 10,\n    \"endTime\" : 18,\n    \"jobDescription\" : \"Requirement for web developer\"\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -215,7 +278,7 @@
 							}
 						},
 						"url": {
-							"raw": "{{local}}/api/v1/job/create",
+							"raw": "{{local}}/api/v1/job/create?userId=343185d7-9ffc-432e-a526-8c90b51ecdbb",
 							"host": [
 								"{{local}}"
 							],
@@ -224,10 +287,695 @@
 								"v1",
 								"job",
 								"create"
+							],
+							"query": [
+								{
+									"key": "userId",
+									"value": "343185d7-9ffc-432e-a526-8c90b51ecdbb"
+								}
 							]
 						}
 					},
-					"response": []
+					"response": [
+						{
+							"name": "create job",
+							"originalRequest": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"title\" : \"Mern stack\",\n    \"startDate\" : \"2025-03-03\",\n    \"endDate\" : \"2025-03-10\",\n    \"amountPerHr\" : 50,\n    \"startTime\" : 10,\n    \"endTime\" : 18,\n    \"jobDescription\" : \"Requirement for Mern stack\"\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{local}}/api/v1/job/create?userId=343185d7-9ffc-432e-a526-8c90b51ecdbb",
+									"host": [
+										"{{local}}"
+									],
+									"path": [
+										"api",
+										"v1",
+										"job",
+										"create"
+									],
+									"query": [
+										{
+											"key": "userId",
+											"value": "343185d7-9ffc-432e-a526-8c90b51ecdbb"
+										}
+									]
+								}
+							},
+							"status": "Created",
+							"code": 201,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "X-Powered-By",
+									"value": "Express"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json; charset=utf-8"
+								},
+								{
+									"key": "Content-Length",
+									"value": "468"
+								},
+								{
+									"key": "ETag",
+									"value": "W/\"1d4-MCi/ywyRJRo2jZuU3Bj/kc4Eumg\""
+								},
+								{
+									"key": "Date",
+									"value": "Tue, 04 Mar 2025 05:30:48 GMT"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								},
+								{
+									"key": "Keep-Alive",
+									"value": "timeout=5"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"status\": 201,\n    \"errorCode\": \"\",\n    \"message\": \"Resource was created successfully.\",\n    \"data\": {\n        \"id\": \"7e5e5c96-f23c-4d50-984b-493d11f64699\",\n        \"isAccepted\": false,\n        \"title\": \"Mern stack\",\n        \"startDate\": \"2025-03-02T18:30:00.000Z\",\n        \"endDate\": \"2025-03-09T18:30:00.000Z\",\n        \"amountPerHr\": 50,\n        \"startTime\": 10,\n        \"endTime\": 18,\n        \"totalAmount\": \"3200\",\n        \"createdBy\": \"343185d7-9ffc-432e-a526-8c90b51ecdbb\",\n        \"updatedAt\": \"2025-03-04T00:00:48.490Z\",\n        \"createdAt\": \"2025-03-04T00:00:48.490Z\",\n        \"deletedAt\": null\n    },\n    \"error\": \"\"\n}"
+						},
+						{
+							"name": "create job",
+							"originalRequest": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"title\" : \"web developer\",\n    \"startDate\" : \"2025-03-03\",\n    \"endDate\" : \"2025-03-10\",\n    \"amountPerHr\" : 40,\n    \"startTime\" : 10,\n    \"endTime\" : 18,\n    \"jobDescription\" : \"Requirement for web developer\"\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{local}}/api/v1/job/create?userId=343185d7-9ffc-432e-a526-8c90b51ecdbb",
+									"host": [
+										"{{local}}"
+									],
+									"path": [
+										"api",
+										"v1",
+										"job",
+										"create"
+									],
+									"query": [
+										{
+											"key": "userId",
+											"value": "343185d7-9ffc-432e-a526-8c90b51ecdbb"
+										}
+									]
+								}
+							},
+							"status": "Created",
+							"code": 201,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "X-Powered-By",
+									"value": "Express"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json; charset=utf-8"
+								},
+								{
+									"key": "Content-Length",
+									"value": "471"
+								},
+								{
+									"key": "ETag",
+									"value": "W/\"1d7-LzlPyuWC+0nHjyqXGFWxqvNsRv4\""
+								},
+								{
+									"key": "Date",
+									"value": "Tue, 04 Mar 2025 05:58:18 GMT"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								},
+								{
+									"key": "Keep-Alive",
+									"value": "timeout=5"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"status\": 201,\n    \"errorCode\": \"\",\n    \"message\": \"Resource was created successfully.\",\n    \"data\": {\n        \"id\": \"87a5e71e-a7fb-447c-ab7c-9578ceeb814d\",\n        \"isAccepted\": false,\n        \"title\": \"web developer\",\n        \"startDate\": \"2025-03-02T18:30:00.000Z\",\n        \"endDate\": \"2025-03-09T18:30:00.000Z\",\n        \"amountPerHr\": 40,\n        \"startTime\": 10,\n        \"endTime\": 18,\n        \"totalAmount\": \"2560\",\n        \"createdBy\": \"343185d7-9ffc-432e-a526-8c90b51ecdbb\",\n        \"updatedAt\": \"2025-03-04T00:28:18.936Z\",\n        \"createdAt\": \"2025-03-04T00:28:18.936Z\",\n        \"deletedAt\": null\n    },\n    \"error\": \"\"\n}"
+						}
+					]
+				},
+				{
+					"name": "list jobs",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{local}}/api/v1/job/list",
+							"host": [
+								"{{local}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"job",
+								"list"
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "list jobs",
+							"originalRequest": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{local}}/api/v1/job/list",
+									"host": [
+										"{{local}}"
+									],
+									"path": [
+										"api",
+										"v1",
+										"job",
+										"list"
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "X-Powered-By",
+									"value": "Express"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json; charset=utf-8"
+								},
+								{
+									"key": "Content-Length",
+									"value": "459"
+								},
+								{
+									"key": "ETag",
+									"value": "W/\"1cb-Xkyp9+wmJ5XVSgeXlYooSdZLq1k\""
+								},
+								{
+									"key": "Date",
+									"value": "Tue, 04 Mar 2025 05:34:28 GMT"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								},
+								{
+									"key": "Keep-Alive",
+									"value": "timeout=5"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"status\": 200,\n    \"errorCode\": \"\",\n    \"message\": \"Request was successful.\",\n    \"data\": [\n        {\n            \"id\": \"7e5e5c96-f23c-4d50-984b-493d11f64699\",\n            \"title\": \"Mern stack\",\n            \"startDate\": \"2025-03-02T18:30:00.000Z\",\n            \"endDate\": \"2025-03-09T18:30:00.000Z\",\n            \"amountPerHr\": 50,\n            \"startTime\": 10,\n            \"endTime\": 18,\n            \"totalAmount\": \"3200\",\n            \"isAccepted\": false,\n            \"createdBy\": \"343185d7-9ffc-432e-a526-8c90b51ecdbb\",\n            \"createdAt\": \"2025-03-04T00:00:48.490Z\",\n            \"updatedAt\": \"2025-03-04T00:00:48.490Z\",\n            \"deletedAt\": null\n        }\n    ],\n    \"error\": \"\"\n}"
+						}
+					]
+				},
+				{
+					"name": "apply for job",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"userId\" : \"698f2737-327b-457d-bf19-00df5993dad2\",\n    \"title\" : \"Mern stack\",\n    \"startDate\" : \"2025-03-03\",\n    \"endDate\" : \"2025-03-10\",\n    \"amountPerHr\" : 50,\n    \"startTime\" : 10,\n    \"endTime\" : 18,\n    \"jobDescription\" : \"Requirement for Mern stack\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{local}}/api/v1/job/applyforjob?jobId=7e5e5c96-f23c-4d50-984b-493d11f64699",
+							"host": [
+								"{{local}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"job",
+								"applyforjob"
+							],
+							"query": [
+								{
+									"key": "jobId",
+									"value": "7e5e5c96-f23c-4d50-984b-493d11f64699"
+								}
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "apply for job",
+							"originalRequest": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"userId\" : \"872fcdcf-0e94-4808-96e5-7b39f2b4dd23\",\n    \"title\" : \"Mern stack\",\n    \"startDate\" : \"2025-03-03\",\n    \"endDate\" : \"2025-03-10\",\n    \"amountPerHr\" : 30,\n    \"startTime\" : 10,\n    \"endTime\" : 18,\n    \"jobDescription\" : \"Requirement for Mern stack\"\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{local}}/api/v1/job/applyforjob?jobId=7e5e5c96-f23c-4d50-984b-493d11f64699",
+									"host": [
+										"{{local}}"
+									],
+									"path": [
+										"api",
+										"v1",
+										"job",
+										"applyforjob"
+									],
+									"query": [
+										{
+											"key": "jobId",
+											"value": "7e5e5c96-f23c-4d50-984b-493d11f64699"
+										}
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "X-Powered-By",
+									"value": "Express"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json; charset=utf-8"
+								},
+								{
+									"key": "Content-Length",
+									"value": "482"
+								},
+								{
+									"key": "ETag",
+									"value": "W/\"1e2-qnAqVob28uvgK5FODfKPRIXmz88\""
+								},
+								{
+									"key": "Date",
+									"value": "Tue, 04 Mar 2025 05:32:12 GMT"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								},
+								{
+									"key": "Keep-Alive",
+									"value": "timeout=5"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"status\": 200,\n    \"errorCode\": \"\",\n    \"message\": \"Request was successful.\",\n    \"data\": {\n        \"id\": \"3a646e20-2450-4e00-b921-818c3bd0dfad\",\n        \"isAccepted\": false,\n        \"userId\": \"872fcdcf-0e94-4808-96e5-7b39f2b4dd23\",\n        \"startDate\": \"2025-03-02T18:30:00.000Z\",\n        \"endDate\": \"2025-03-09T18:30:00.000Z\",\n        \"amountPerHr\": \"30\",\n        \"startTime\": 10,\n        \"endTime\": 18,\n        \"jobId\": \"7e5e5c96-f23c-4d50-984b-493d11f64699\",\n        \"totalAmount\": \"1920\",\n        \"updatedAt\": \"2025-03-04T00:02:12.220Z\",\n        \"createdAt\": \"2025-03-04T00:02:12.220Z\",\n        \"deletedAt\": null\n    },\n    \"error\": \"\"\n}"
+						},
+						{
+							"name": "apply for job",
+							"originalRequest": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"userId\" : \"698f2737-327b-457d-bf19-00df5993dad2\",\n    \"title\" : \"Mern stack\",\n    \"startDate\" : \"2025-03-03\",\n    \"endDate\" : \"2025-03-10\",\n    \"amountPerHr\" : 50,\n    \"startTime\" : 10,\n    \"endTime\" : 18,\n    \"jobDescription\" : \"Requirement for Mern stack\"\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{local}}/api/v1/job/applyforjob?jobId=7e5e5c96-f23c-4d50-984b-493d11f64699",
+									"host": [
+										"{{local}}"
+									],
+									"path": [
+										"api",
+										"v1",
+										"job",
+										"applyforjob"
+									],
+									"query": [
+										{
+											"key": "jobId",
+											"value": "7e5e5c96-f23c-4d50-984b-493d11f64699"
+										}
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "X-Powered-By",
+									"value": "Express"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json; charset=utf-8"
+								},
+								{
+									"key": "Content-Length",
+									"value": "482"
+								},
+								{
+									"key": "ETag",
+									"value": "W/\"1e2-xQXQgtO+5iNsDiInejJwj3zTJgg\""
+								},
+								{
+									"key": "Date",
+									"value": "Tue, 04 Mar 2025 05:34:12 GMT"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								},
+								{
+									"key": "Keep-Alive",
+									"value": "timeout=5"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"status\": 200,\n    \"errorCode\": \"\",\n    \"message\": \"Request was successful.\",\n    \"data\": {\n        \"id\": \"355f3689-7c4a-4855-a397-f14b23c2c5f6\",\n        \"isAccepted\": false,\n        \"userId\": \"698f2737-327b-457d-bf19-00df5993dad2\",\n        \"startDate\": \"2025-03-02T18:30:00.000Z\",\n        \"endDate\": \"2025-03-09T18:30:00.000Z\",\n        \"amountPerHr\": \"50\",\n        \"startTime\": 10,\n        \"endTime\": 18,\n        \"jobId\": \"7e5e5c96-f23c-4d50-984b-493d11f64699\",\n        \"totalAmount\": \"3200\",\n        \"updatedAt\": \"2025-03-04T00:04:12.455Z\",\n        \"createdAt\": \"2025-03-04T00:04:12.455Z\",\n        \"deletedAt\": null\n    },\n    \"error\": \"\"\n}"
+						}
+					]
+				},
+				{
+					"name": "accept job req",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"jobId\": \"7e5e5c96-f23c-4d50-984b-493d11f64699\",\n    \"userId\": \"872fcdcf-0e94-4808-96e5-7b39f2b4dd23\",\n    \"startDate\": \"2025-03-02T18:30:00.000Z\",\n    \"endDate\": \"2025-03-09T18:30:00.000Z\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{local}}/api/v1/job/acceptjob",
+							"host": [
+								"{{local}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"job",
+								"acceptjob"
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "accept job req",
+							"originalRequest": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"jobId\": \"7e5e5c96-f23c-4d50-984b-493d11f64699\",\n    \"userId\": \"872fcdcf-0e94-4808-96e5-7b39f2b4dd23\",\n    \"startDate\": \"2025-03-02T18:30:00.000Z\",\n    \"endDate\": \"2025-03-09T18:30:00.000Z\"\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{local}}/api/v1/job/acceptjob",
+									"host": [
+										"{{local}}"
+									],
+									"path": [
+										"api",
+										"v1",
+										"job",
+										"acceptjob"
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "X-Powered-By",
+									"value": "Express"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json; charset=utf-8"
+								},
+								{
+									"key": "Content-Length",
+									"value": "395"
+								},
+								{
+									"key": "ETag",
+									"value": "W/\"18b-U4+2oaZNo3KM033uHkrePGq/QZ4\""
+								},
+								{
+									"key": "Date",
+									"value": "Tue, 04 Mar 2025 05:55:58 GMT"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								},
+								{
+									"key": "Keep-Alive",
+									"value": "timeout=5"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"status\": 200,\n    \"errorCode\": \"\",\n    \"message\": \"Request was successful.\",\n    \"data\": {\n        \"id\": \"fdb80ed5-9f8e-4dbb-848f-638e2cadf744\",\n        \"userId\": \"872fcdcf-0e94-4808-96e5-7b39f2b4dd23\",\n        \"jobId\": \"7e5e5c96-f23c-4d50-984b-493d11f64699\",\n        \"startDate\": \"2025-03-02T13:00:00.000Z\",\n        \"endDate\": \"2025-03-09T13:00:00.000Z\",\n        \"updatedAt\": \"2025-03-04T00:25:58.619Z\",\n        \"createdAt\": \"2025-03-04T00:25:58.619Z\",\n        \"deletedAt\": null\n    },\n    \"error\": \"\"\n}"
+						}
+					]
+				},
+				{
+					"name": "update job",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"jobId\": \"87a5e71e-a7fb-447c-ab7c-9578ceeb814d\",\n    \"isAccepted\": false,\n    \"title\": \"web developer 11\",\n    \"startDate\": \"2025-03-02T18:30:00.000Z\",\n    \"endDate\": \"2025-03-09T18:30:00.000Z\",\n    \"amountPerHr\": 44,\n    \"startTime\": 10,\n    \"endTime\": 18,\n    \"jobDescription\": \"Requirement for web developer\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{local}}/api/v1/job/updatejob?userId=343185d7-9ffc-432e-a526-8c90b51ecdbb",
+							"host": [
+								"{{local}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"job",
+								"updatejob"
+							],
+							"query": [
+								{
+									"key": "userId",
+									"value": "343185d7-9ffc-432e-a526-8c90b51ecdbb"
+								}
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "update job",
+							"originalRequest": {
+								"method": "PUT",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"jobId\": \"87a5e71e-a7fb-447c-ab7c-9578ceeb814d\",\n    \"isAccepted\": false,\n    \"title\": \"web developer 11\",\n    \"startDate\": \"2025-03-02T18:30:00.000Z\",\n    \"endDate\": \"2025-03-09T18:30:00.000Z\",\n    \"amountPerHr\": 44,\n    \"startTime\": 10,\n    \"endTime\": 18,\n    \"jobDescription\": \"Requirement for web developer\"\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{local}}/api/v1/job/updatejob?userId=343185d7-9ffc-432e-a526-8c90b51ecdbb",
+									"host": [
+										"{{local}}"
+									],
+									"path": [
+										"api",
+										"v1",
+										"job",
+										"updatejob"
+									],
+									"query": [
+										{
+											"key": "userId",
+											"value": "343185d7-9ffc-432e-a526-8c90b51ecdbb"
+										}
+									]
+								}
+							},
+							"status": "Created",
+							"code": 201,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "X-Powered-By",
+									"value": "Express"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json; charset=utf-8"
+								},
+								{
+									"key": "Content-Length",
+									"value": "382"
+								},
+								{
+									"key": "ETag",
+									"value": "W/\"17e-MVlykiNJ2QUpK+yVKbcf2cjnkMc\""
+								},
+								{
+									"key": "Date",
+									"value": "Tue, 04 Mar 2025 06:37:19 GMT"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								},
+								{
+									"key": "Keep-Alive",
+									"value": "timeout=5"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"status\": 201,\n    \"errorCode\": \"\",\n    \"message\": \"Resource was created successfully.\",\n    \"data\": {\n        \"title\": \"web developer 11\",\n        \"startDate\": \"2025-03-02T18:30:00.000Z\",\n        \"endDate\": \"2025-03-09T18:30:00.000Z\",\n        \"amountPerHr\": 44,\n        \"startTime\": 10,\n        \"endTime\": 18,\n        \"jobDescription\": \"Requirement for web developer\",\n        \"totalAmount\": 2816,\n        \"isAccepted\": false,\n        \"createdBy\": \"343185d7-9ffc-432e-a526-8c90b51ecdbb\"\n    },\n    \"error\": \"\"\n}"
+						}
+					]
+				},
+				{
+					"name": "delete job",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"userId\" : \"343185d7-9ffc-432e-a526-8c90b51ecdbb\",\n    \"jobId\" : \"87a5e71e-a7fb-447c-ab7c-9578ceeb814d\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{local}}/api/v1/job/deletejob",
+							"host": [
+								"{{local}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"job",
+								"deletejob"
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "delete job",
+							"originalRequest": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"userId\" : \"343185d7-9ffc-432e-a526-8c90b51ecdbb\",\n    \"jobId\" : \"87a5e71e-a7fb-447c-ab7c-9578ceeb814d\"\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{local}}/api/v1/job/deletejob",
+									"host": [
+										"{{local}}"
+									],
+									"path": [
+										"api",
+										"v1",
+										"job",
+										"deletejob"
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "X-Powered-By",
+									"value": "Express"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json; charset=utf-8"
+								},
+								{
+									"key": "Content-Length",
+									"value": "87"
+								},
+								{
+									"key": "ETag",
+									"value": "W/\"57-V6YXQ8dJoRdc4wxcA9K+0CQ85qY\""
+								},
+								{
+									"key": "Date",
+									"value": "Tue, 04 Mar 2025 06:46:35 GMT"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								},
+								{
+									"key": "Keep-Alive",
+									"value": "timeout=5"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"status\": 200,\n    \"errorCode\": \"\",\n    \"message\": \"Job deleted successfully\",\n    \"data\": \"\",\n    \"error\": \"\"\n}"
+						}
+					]
 				}
 			]
 		}
