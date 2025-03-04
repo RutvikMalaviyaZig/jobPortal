@@ -7,8 +7,10 @@ const Job = require("../models/Job");
 const MESSAGES = require("../utils/Messages");
 const HTTP_STATUS_CODE = require("../utils/HttpStatusCodes");
 const JobApplicant = require("../models/JobApplicant");
+const User = require("../models/User");
 const { Op } = require("sequelize");
 const AcceptedJob = require("../models/AcceptedJob");
+const sendEmail = require("../helpers/mail/sendMail");
 
 module.exports = {
   createJob: async (req, res) => {
@@ -200,20 +202,9 @@ module.exports = {
 
     await JobApplicant.update(
       { isAccepted: true },
-      {
-        where: {
-          [Op.and]: [{ jobId }, { userId }],
-        },
-      }
+      { where: { [Op.and]: [{ jobId }, { userId }] } }
     );
-    await Job.update(
-      { isAccepted: true },
-      {
-        where: {
-          id: jobId,
-        },
-      }
-    );
+    await Job.update({ isAccepted: true }, { where: { id: jobId } });
 
     const payload = {
       userId,
@@ -231,6 +222,38 @@ module.exports = {
         error: "",
       });
     }
+
+    const users = await JobApplicant.findAll({
+      where: { jobId },
+      include: [
+        {
+          model: Job,
+          required: true,
+        },
+        {
+          model: User,
+          attributes: ["email"],
+        },
+      ],
+    });
+
+    for (const applicant of users) {
+      const email = applicant.user.dataValues.email;
+      const subject = applicant.isAccepted
+        ? "Job Application Accepted"
+        : "Job Application Rejected";
+      const text = applicant.isAccepted
+        ? "Congratulations! You have been selected for the job."
+        : "We regret to inform you that your application was not selected.";
+      try {
+        // Send the email
+        await sendEmail(email, subject, text);
+        console.log(`Email sent to: ${email}`);
+      } catch (error) {
+        console.error("Error sending email to:", email, error);
+      }
+    }
+
     return res.status(HTTP_STATUS_CODE.OK).json({
       status: HTTP_STATUS_CODE.OK,
       errorCode: "",
@@ -271,19 +294,19 @@ module.exports = {
         const totalMoney =
           dateDifferenceInDays * totalHoursPerDay * amountPerHr;
 
-      // Prepare updated values
-      const updatedValue = {
-        title,
-        startDate,
-        endDate,
-        amountPerHr,
-        startTime,
-        endTime,
-        jobDescription,
-        totalAmount: totalMoney,
-        isAccepted,
-        createdBy,
-      };
+        // Prepare updated values
+        const updatedValue = {
+          title,
+          startDate,
+          endDate,
+          amountPerHr,
+          startTime,
+          endTime,
+          jobDescription,
+          totalAmount: totalMoney,
+          isAccepted,
+          createdBy,
+        };
         // ceate job using payload
         await Job.update(updatedValue, {
           where: { id: jobId },

@@ -1,6 +1,7 @@
 "use strict";
 const { DataTypes } = require("sequelize");
 const sequelize = require("../../config/database");
+const JobApplicant = require("./JobApplicant");
 
 const User = sequelize.define(
   "users",
@@ -50,5 +51,8 @@ const User = sequelize.define(
     paranoid: true,
   }
 );
+
+User.hasMany(JobApplicant, { foreignKey: 'userId' });
+JobApplicant.belongsTo(User, { foreignKey: 'userId' });
 
 module.exports = User;
