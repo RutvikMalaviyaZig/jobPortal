@@ -1,17 +1,23 @@
 "use strict";
 const { DataTypes } = require("sequelize");
 const sequelize = require("../../config/database");
-const JobApplicant = require("./JobApplicant");
-const Payment = require("./Payment");
+const CardDetails = require("./CardDetails");
 
-const User = sequelize.define(
-  "users",
+const Payment = sequelize.define(
+  "payments",
   {
     id: {
       type: DataTypes.UUID,
       allowNull: false,
       primaryKey: true,
       defaultValue: DataTypes.UUIDV4,
+    },
+    userId: {
+      type: DataTypes.UUID,
+      references: {
+        model: "users",
+        key: "id",
+      },
     },
     email: {
       type: DataTypes.STRING,
@@ -29,9 +35,9 @@ const User = sequelize.define(
         },
       },
     },
-    password: {
-      type: DataTypes.STRING,
-      allowNull: false,
+    isPaymentDone : {
+        type: DataTypes.BOOLEAN,
+        defaultValue : false,
     },
     createdAt: {
       allowNull: false,
@@ -47,20 +53,17 @@ const User = sequelize.define(
   },
   {
     freezeTableName: true,
-    tableName: "users",
+    tableName: "payments",
     timestamps: true,
     paranoid: true,
   }
 );
 
-User.hasMany(JobApplicant, { foreignKey: 'userId' });
-JobApplicant.belongsTo(User, { foreignKey: 'userId' });
-
-User.hasMany(Payment, {
-  foreignKey : "userId"
+Payment.hasMany(CardDetails, {
+  foreignKey : "paymentId"
 })
-Payment.belongsTo(User, {
-  foreignKey : "userId"
+CardDetails.hasMany(Payment, {
+  foreignKey : "paymentId"
 })
 
-module.exports = User;
+module.exports = Payment;

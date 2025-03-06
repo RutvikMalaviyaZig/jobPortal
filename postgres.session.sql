@@ -51,3 +51,34 @@
 --     "updatedAt" TIMESTAMP NOT NULL,
 --     "deletedAt" TIMESTAMP
 -- );
+
+
+
+-- CREATE TABLE IF NOT EXISTS payments (
+--   id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
+--   userId UUID,
+--   email VARCHAR(255) NOT NULL UNIQUE,
+--   isPaymentDone BOOLEAN DEFAULT FALSE,
+--   createdAt TIMESTAMP NOT NULL,
+--   updatedAt TIMESTAMP NOT NULL,
+--   deletedAt TIMESTAMP,
+--   CONSTRAINT fk_userId FOREIGN KEY (userId) REFERENCES users(id)
+-- );
+
+
+-- CREATE TABLE IF NOT EXISTS carddetails (
+--   id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
+--   paymentId UUID,
+--   isPaymentDone BOOLEAN DEFAULT FALSE,
+--   cardHolderName VARCHAR(255),
+--   cardExpYear INTEGER,  
+--   cardExpMonth INTEGER,  
+--   cardNumber BIGINT,  
+--   cardCVV INTEGER,  
+--   cardToken VARCHAR,
+--   createdAt TIMESTAMP NOT NULL,
+--   updatedAt TIMESTAMP NOT NULL,
+--   deletedAt TIMESTAMP,
+--   CONSTRAINT fk_paymentId FOREIGN KEY (paymentId) REFERENCES payments(id)
+-- );
+

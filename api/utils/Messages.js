@@ -36,6 +36,9 @@ const MESSAGES = {
   USER_DETAILS :" User details ",
   JOB_DELETE_SUCCESSFULLY : "Job deleted successfully",
   GIVE_VALID_ID : "please give valid id",
+  CUSTOMER_ID_CREATED : "customer id created successfully",
+  PAYMENT_SUCCESSFULL : "payment successfully done",
+  TOKEN_REQUIRED : "Token is required to create card"
 };
 
 module.exports = MESSAGES;
