@@ -11,6 +11,7 @@ router.put('/updatejob', JobController.updateJob)
 router.post('/deletejob', JobController.deleteJob)
 router.get('/userprofile', JobController.userProfileView)
 router.get('/jobusersdetails', JobController.allUsesInParticularJob)
-
+router.get('/getjobdetails', JobController.viewJobDetails)
+router.get('/userappliedjobs', JobController.viweJobsWhereUserApplied)
 
 module.exports = router;

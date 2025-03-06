@@ -14,7 +14,7 @@ module.exports = {
   createCustomer: async (req, res) => {
     try {
       
-      const { email } = req.body;
+      const { email , userId} = req.body;
       const { error } = validationEmail(req.body);
       if (error) {
         return res.status(HTTP_STATUS_CODE.BAD_REQUEST).json({
@@ -31,9 +31,7 @@ module.exports = {
         { customerId: customer.id },
         {
           where: {
-            // customerId: null,
-            //user id
-            //email
+            userId
           },
         }
       );

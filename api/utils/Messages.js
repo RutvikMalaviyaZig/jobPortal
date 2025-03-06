@@ -45,6 +45,7 @@ const MESSAGES = {
   YOU_ARE_NOT_ABLE: "you create the job so you can not apply in it",
   JOB_ACCEPTED : "job accepted",
   JOB_UPDATED : "job is updated successfully",
+  GET_JOB_DETAILS_SUCCESSFULLY : "get job details success fully",
 
   // mail contents
   MAIL_SUBJECT : "Job Application Status",

@@ -274,6 +274,17 @@ module.exports = {
           { jobStatus: "Accepted" },
           { where: { [Op.and]: [{ jobId }, { userId }] } } // update isAccepted flag in JobApplicant
         );
+        await JobApplicant.update(
+          { jobStatus: "Rejected" },
+          {
+            where: {
+              [Op.and]: [
+                { jobId: jobId }, // jobId should be equal to the given jobId
+                { userId: { [Op.ne]: userId } }, // userId should not be equal to the given userId
+              ],
+            },
+          }
+        );
         await Job.update({ isAccepted: true }, { where: { id: jobId } }); // update isAccepted flag in Job
 
         const users = await JobApplicant.findAll({
@@ -290,7 +301,6 @@ module.exports = {
             },
           ],
         });
-
 
         const acceptedEmails = users
           .filter((applicant) => applicant.isAccepted)
@@ -494,7 +504,7 @@ module.exports = {
    * @file JobController.js
    * @param {Request} req
    * @param {Response} res
-   * @description get the user profile using jobId and useId for show the profile of the user to job creater
+   * @description view the perticular user profile
    */
   userProfileView: async (req, res) => {
     try {
@@ -532,12 +542,13 @@ module.exports = {
       });
     }
   },
+
   /**
    * @name allUsesInParticularJob
    * @file JobController.js
    * @param {Request} req
    * @param {Response} res
-   * @description get the user profile using jobId and useId for show the profile of the user to job creater
+   * @description get the all user which applyied in particularjob
    */
   allUsesInParticularJob: async (req, res) => {
     try {
@@ -545,7 +556,6 @@ module.exports = {
       const allJobApplicant = await JobApplicant.findAll({
         where: {
           jobId: jobId,
-          isDeleted: false,
         },
       });
 
@@ -566,6 +576,72 @@ module.exports = {
       });
     }
   },
+
+  /**
+   * @name viewJobDetails
+   * @file JobController.js
+   * @param {Request} req
+   * @param {Response} res
+   * @description view the particular job details
+   */
+
+  viewJobDetails: async (req, res) => {
+    try {
+      const { jobId } = req.body;
+      const findJobDetails = await Job.findOne({
+        where: { id: jobId, isDeleted: false },
+      });
+      return res.status(HTTP_STATUS_CODE.OK).json({
+        status: HTTP_STATUS_CODE.OK,
+        errorCode: "",
+        message: MESSAGES.GET_JOB_DETAILS_SUCCESSFULLY,
+        data: findJobDetails,
+        error: "",
+      });
+    } catch (error) {
+      return res.status(HTTP_STATUS_CODE.INTERNAL_SERVER_ERROR).json({
+        status: HTTP_STATUS_CODE.INTERNAL_SERVER_ERROR,
+        errorCode: "",
+        message: error.message,
+        data: "",
+        error: "",
+      });
+    }
+  },
+
+
+   /**
+   * @name viweJobsWhereUserApplied
+   * @file JobController.js
+   * @param {Request} req
+   * @param {Response} res
+   * @description view all jobs where user is applyed
+   */
+
+   viweJobsWhereUserApplied : async (req,res) => {
+    try {
+      const { userId } = req.body;
+      const allJobApplicant = await JobApplicant.findAll({
+        where: {
+          userId: userId,
+        },
+      });
+
+      return res.status(HTTP_STATUS_CODE.OK).json({
+        status: HTTP_STATUS_CODE.OK,
+        errorCode: "",
+        message: MESSAGES.OK,
+        data: allJobApplicant,
+        error: "",
+      });
+    } catch (error) {
+      return res.status(HTTP_STATUS_CODE.INTERNAL_SERVER_ERROR).json({
+        status: HTTP_STATUS_CODE.INTERNAL_SERVER_ERROR,
+        errorCode: "",
+        message: error.message,
+        data: "",
+        error: "",
+      });
+    }
+   },
 };
-
-
