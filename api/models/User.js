@@ -33,6 +33,10 @@ const User = sequelize.define(
       type: DataTypes.STRING,
       allowNull: false,
     },
+    stripeCustomerId : {
+      type : DataTypes.STRING,
+      defaultValue : " "
+    },
     createdAt: {
       allowNull: false,
       type: DataTypes.DATE,

@@ -50,10 +50,9 @@ const JobApplicant = sequelize.define(
       type: DataTypes.STRING,
       allowNull: true,
     },
-    isAccepted: {
-      type: DataTypes.BOOLEAN,
-      allowNull: true,
-      defaultValue: false,
+    jobStatus : {
+      type : DataTypes.STRING,
+      defaultValue : "panding"
     },
     createdAt: {
       allowNull: false,

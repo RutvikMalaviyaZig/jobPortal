@@ -4,6 +4,7 @@
 --     "id" UUID PRIMARY KEY DEFAULT uuid_generate_v4 (),
 --     "email" VARCHAR(255) UNIQUE NOT NULL,
 --     "password" VARCHAR(255) NOT NULL,
+--     "stripeCustomerId" VARCHAR DEFAULT '',
 --     "createdAt" TIMESTAMP NOT NULL,
 --     "updatedAt" TIMESTAMP NOT NULL,
 --     "deletedAt" TIMESTAMP
@@ -18,7 +19,9 @@
 --     "startTime" INTEGER NOT NULL,
 --     "endTime" INTEGER NOT NULL,
 --     "totalAmount" VARCHAR(255),
+--     "jobDescription" TEXT,
 --     "isAccepted" BOOLEAN DEFAULT FALSE,
+--     "isDeleted" BOOLEAN DEFAULT FALSE,
 --     "createdBy" UUID REFERENCES "users" ("id") ON DELETE CASCADE,
 --     "createdAt" TIMESTAMP NOT NULL,
 --     "updatedAt" TIMESTAMP NOT NULL,
@@ -35,50 +38,33 @@
 --     "startTime" INTEGER NOT NULL,
 --     "endTime" INTEGER NOT NULL,
 --     "totalAmount" VARCHAR(255),
---     "isAccepted" BOOLEAN DEFAULT FALSE,
+--     "jobStatus" VARCHAR DEFAULT 'pending',
 --     "createdAt" TIMESTAMP NOT NULL,
 --     "updatedAt" TIMESTAMP NOT NULL,
 --     "deletedAt" TIMESTAMP
 -- );
-
--- CREATE TABLE "acceptedJob" (
---     "id" UUID PRIMARY KEY DEFAULT uuid_generate_v4 (),
---     "userId" UUID REFERENCES "users" ("id") ON DELETE CASCADE,
---     "jobId" UUID REFERENCES "jobs" ("id") ON DELETE CASCADE,
---     "startDate" TIMESTAMP,
---     "endDate" TIMESTAMP,
---     "createdAt" TIMESTAMP NOT NULL,
---     "updatedAt" TIMESTAMP NOT NULL,
---     "deletedAt" TIMESTAMP
--- );
-
 
 
 -- CREATE TABLE IF NOT EXISTS payments (
---   id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
---   userId UUID,
---   email VARCHAR(255) NOT NULL UNIQUE,
---   isPaymentDone BOOLEAN DEFAULT FALSE,
---   createdAt TIMESTAMP NOT NULL,
---   updatedAt TIMESTAMP NOT NULL,
---   deletedAt TIMESTAMP,
---   CONSTRAINT fk_userId FOREIGN KEY (userId) REFERENCES users(id)
+--   "id" UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
+--   "userId" UUID,
+--   "email" VARCHAR(255) NOT NULL UNIQUE,
+--   "isPaymentDone" BOOLEAN DEFAULT FALSE,
+--   "createdAt" TIMESTAMP NOT NULL,
+--   "updatedAt" TIMESTAMP NOT NULL,
+--   "deletedAt" TIMESTAMP,
+--   CONSTRAINT fk_userId FOREIGN KEY ("userId") REFERENCES "users"(id)
 -- );
-
 
 -- CREATE TABLE IF NOT EXISTS carddetails (
---   id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
---   paymentId UUID,
---   isPaymentDone BOOLEAN DEFAULT FALSE,
---   cardHolderName VARCHAR(255),
---   cardExpYear INTEGER,  
---   cardExpMonth INTEGER,  
---   cardNumber BIGINT,  
---   cardCVV INTEGER,  
---   cardToken VARCHAR,
---   createdAt TIMESTAMP NOT NULL,
---   updatedAt TIMESTAMP NOT NULL,
---   deletedAt TIMESTAMP,
---   CONSTRAINT fk_paymentId FOREIGN KEY (paymentId) REFERENCES payments(id)
+--   "id" UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
+--   "paymentId" UUID,
+--   "cardId" VARCHAR(255),
+--   "cardExpYear" INTEGER,
+--   "cardExpMonth" INTEGER,
+--   "cardLast4Digit" INTEGER,
+--   "createdAt" TIMESTAMP NOT NULL,
+--   "updatedAt" TIMESTAMP NOT NULL,
+--   "deletedAt" TIMESTAMP,
+--   CONSTRAINT fk_paymentId FOREIGN KEY ("paymentId") REFERENCES "payments"(id)
 -- );
-

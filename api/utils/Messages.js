@@ -13,7 +13,8 @@ const MESSAGES = {
   METHOD_NOT_ALLOWED: "The request method is not allowed for this resource.",
   INTERNAL_SERVER_ERROR: "An error occurred on the server.",
   NOT_IMPLEMENTED: "The server does not support the requested functionality.",
-  BAD_GATEWAY: "The server received an invalid response from the upstream server.",
+  BAD_GATEWAY:
+    "The server received an invalid response from the upstream server.",
   SERVICE_UNAVAILABLE: "The service is temporarily unavailable.",
   GATEWAY_TIMEOUT: "The request timed out while waiting for a response.",
   ALL_FIELDS_REQUIRED: "All fields are required",
@@ -28,17 +29,27 @@ const MESSAGES = {
   PASSWORD_RESET_SUCCESSFUL: "Password reset successful",
   PASSWORD_RESET_ERROR: "Error resetting password",
   RESET_LINK_SENT: "Reset link sent",
-  FILE_NOT_UPLOADED : "file not uploaded",
+  FILE_NOT_UPLOADED: "file not uploaded",
   FILE_UPLOADED_SUCCESSFULLY: "file uploaded successfully",
-  USER_CREATED : "user created successfully",
-  PLZ_SIGNUP_LOGIN :  "Plz signup/login",
-  USER_LOGOUT: 'user logout ',
-  USER_DETAILS :" User details ",
-  JOB_DELETE_SUCCESSFULLY : "Job deleted successfully",
-  GIVE_VALID_ID : "please give valid id",
-  CUSTOMER_ID_CREATED : "customer id created successfully",
-  PAYMENT_SUCCESSFULL : "payment successfully done",
-  TOKEN_REQUIRED : "Token is required to create card"
+  USER_CREATED: "user created successfully",
+  PLZ_SIGNUP_LOGIN: "Plz signup/login",
+  USER_LOGOUT: "user logout ",
+  USER_DETAILS: " User details ",
+  JOB_DELETE_SUCCESSFULLY: "Job deleted successfully",
+  GIVE_VALID_ID: "please give valid id",
+  CUSTOMER_ID_CREATED: "customer id created successfully",
+  PAYMENT_SUCCESSFULL: "payment successfully done",
+  TOKEN_REQUIRED: "Token is required to create card",
+  PAYMENT_METHOD_ATTACHED: "Payment method successfully created and attached!",
+  USER_PROFILE: " user profile is get successfully",
+  YOU_ARE_NOT_ABLE: "you create the job so you can not apply in it",
+  JOB_ACCEPTED : "job accepted",
+  JOB_UPDATED : "job is updated successfully",
+
+  // mail contents
+  MAIL_SUBJECT : "Job Application Status",
+  MAIL_FOR_ACCEPTED: "Congratulations! You have been selected for the job.",
+  MAIL_FOR_REJECTED: "We regret to inform you that your application was not selected.",
 };
 
 module.exports = MESSAGES;

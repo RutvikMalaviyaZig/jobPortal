@@ -8,12 +8,22 @@ const transporter = nodemailer.createTransport({
         pass: process.env.MAIL_PASS
     }
 });
-const sendEmail = async (to, subject, text) => {
-    await transporter.sendMail({
-        from: process.env.MAIL_FROM_EMAIL,
-        to,
-        subject,
-        text
-    });
-};
-module.exports = sendEmail;
+/**
+ * Send Bulk Email
+ * @param {Array} emails - List of email addresses to send to.
+ * @param {String} subject - Subject of the email.
+ * @param {String} text - Body of the email.
+ */
+const sendBulkEmail = (emails, subject, text) => {
+    const mailOptions = {
+      from: process.env.MAIL_FORM_EMAIL,   // Your email address
+      to: emails.join(','),             // Multiple email addresses, separated by commas
+      subject: subject,
+      text: text
+    };
+  
+    // Send email using the transporter
+    return transporter.sendMail(mailOptions);
+  };
+  
+  module.exports = sendBulkEmail;

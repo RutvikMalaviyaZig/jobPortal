@@ -3,7 +3,7 @@ const { DataTypes } = require("sequelize");
 const sequelize = require("../../config/database");
 const User = require("./User");
 const JobApplicant = require("./JobApplicant");
-const AcceptedJob = require("./AcceptedJob");
+
 
 const Job = sequelize.define(
   "jobs",
@@ -43,7 +43,16 @@ const Job = sequelize.define(
       type: DataTypes.STRING,
       allowNull: true,
     },
+    jobDescription : {
+      type: DataTypes.STRING,
+      allowNull: true,
+    },
     isAccepted: {
+      type: DataTypes.BOOLEAN,
+      allowNull: true,
+      defaultValue: false,
+    },
+    isDeleted : {
       type: DataTypes.BOOLEAN,
       allowNull: true,
       defaultValue: false,
@@ -84,9 +93,6 @@ JobApplicant.belongsTo(Job, {
   foreignKey : "jobId"
 })
 
-Job.hasOne(AcceptedJob, {
-   foreignKey : "jobId"
-})
 
 User.belongsTo(Job, {
   foreignKey: "id",

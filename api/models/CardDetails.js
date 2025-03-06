@@ -11,14 +11,6 @@ const CardDetails = sequelize.define(
       primaryKey: true,
       defaultValue: DataTypes.UUIDV4,
     },
-    isPaymentDone: {
-      type: DataTypes.BOOLEAN,
-      defaultValue: false,
-      references: {
-        model: "payments",
-        key: "isPaymentDone",
-      },
-    },
     paymentId: {
       type: DataTypes.UUID,
       references: {
@@ -26,7 +18,7 @@ const CardDetails = sequelize.define(
         key: "id",
       },
     },
-    cardHolderName: {
+    cardId: {
       type: DataTypes.STRING,
     },
     cardExpYear: {
@@ -35,14 +27,8 @@ const CardDetails = sequelize.define(
     cardExpMonth: {
       type: DataTypes.NUMBER(2),
     },
-    cardNumber: {
+    cardLast4Digit: {
       type: DataTypes.NUMBER(12),
-    },
-    cardCVV: {
-      type: DataTypes.NUMBER(3),
-    },
-    cardToken : {
-      type: DataTypes.STRING,
     },
     createdAt: {
       allowNull: false,

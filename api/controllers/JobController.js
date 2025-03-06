@@ -8,12 +8,10 @@ const MESSAGES = require("../utils/Messages");
 const HTTP_STATUS_CODE = require("../utils/HttpStatusCodes");
 const JobApplicant = require("../models/JobApplicant");
 const User = require("../models/User");
-const { Op } = require("sequelize");
-const AcceptedJob = require("../models/AcceptedJob");
-const sendEmail = require("../helpers/mail/sendMail");
+const { Op, where } = require("sequelize");
+const sendBulkEmail = require("../helpers/mail/sendMail");
 
 module.exports = {
-
   /**
    * @name createJob
    * @file JobController.js
@@ -23,108 +21,211 @@ module.exports = {
    */
 
   createJob: async (req, res) => {
-  try {
-    const { error } = validationCreateJob(req.body); // validate all fields using joy validator
-    if (error) {
-      console.log(error);
-      return res.send(error.details);
-    }
+    try {
+      const {
+        title,
+        startDate,
+        endDate,
+        amountPerHr,
+        startTime,
+        endTime,
+        jobDescription,
+        userId,
+      } = req.body;
 
-    const {
-      title,
-      startDate,
-      endDate,
-      amountPerHr,
-      startTime,
-      endTime,
-      jobDescription,
-      isAccepted,
-    } = req.body;
-    const userId = req.query.userId; 
-    if (!userId) {
-      return res.status(HTTP_STATUS_CODE.BAD_REQUEST).json({
-        status: HTTP_STATUS_CODE.BAD_REQUEST,
+      const { error } = validationCreateJob(req.body); // validate all fields using joy validator
+      if (error) {
+        console.log(error);
+        return res.send(error.details);
+      }
+
+      const startDateObj = new Date(startDate);
+      const endDateObj = new Date(endDate);
+
+      const dateDifferenceInDays =
+        (endDateObj - startDateObj) / (1000 * 60 * 60 * 24) + 1; // +1 to include both start and end day
+
+      // Calculate total working hours per day
+      const totalHoursPerDay = endTime - startTime;
+
+      // Calculate total earnings
+      const totalMoney = dateDifferenceInDays * totalHoursPerDay * amountPerHr;
+
+      // create pauload for create job
+      const payload = {
+        title,
+        startDate,
+        endDate,
+        amountPerHr,
+        startTime,
+        endTime,
+        jobDescription,
+        totalAmount: totalMoney,
+        createdBy: userId,
+      };
+
+      // ceate job using payload
+      const newJob = await Job.create(payload);
+      return res.status(HTTP_STATUS_CODE.CREATED).json({
+        status: HTTP_STATUS_CODE.CREATED,
         errorCode: "",
-        message: MESSAGES.BAD_REQUEST,
+        message: MESSAGES.CREATED,
+        data: newJob,
+        error: "",
+      });
+    } catch (error) {
+      return res.status(HTTP_STATUS_CODE.INTERNAL_SERVER_ERROR).json({
+        status: HTTP_STATUS_CODE.INTERNAL_SERVER_ERROR,
+        errorCode: "",
+        message: error.message,
         data: "",
         error: "",
       });
     }
-
-    const startDateObj = new Date(startDate);
-    const endDateObj = new Date(endDate);
-
-    const dateDifferenceInDays =
-      (endDateObj - startDateObj) / (1000 * 60 * 60 * 24) + 1; // +1 to include both start and end day
-
-    // Calculate total working hours per day
-    const totalHoursPerDay = endTime - startTime;
-
-    // Calculate total earnings
-    const totalMoney = dateDifferenceInDays * totalHoursPerDay * amountPerHr; 
-
-    // create pauload for create job
-    const payload = {
-      title,
-      startDate,
-      endDate,
-      amountPerHr,
-      startTime,
-      endTime,
-      jobDescription,
-      totalAmount: totalMoney,
-      isAccepted,
-      createdBy: userId,
-    };
-
-    // ceate job using payload
-    const newJob = await Job.create(payload);
-    return res.status(HTTP_STATUS_CODE.CREATED).json({
-      status: HTTP_STATUS_CODE.CREATED,
-      errorCode: "",
-      message: MESSAGES.CREATED,
-      data: newJob,
-      error: "",
-    });
-  } catch (error) {
-    return res.status(HTTP_STATUS_CODE.INTERNAL_SERVER_ERROR).json({
-      status: HTTP_STATUS_CODE.INTERNAL_SERVER_ERROR,
-      errorCode: "",
-      message: MESSAGES.INTERNAL_SERVER_ERROR,
-      data: "",
-      error: "",
-    });
-  }
   },
-
 
   /**
    * @name listJobs
    * @file JobController.js
    * @param {Request} req
    * @param {Response} res
-   * @description list all jobs 
+   * @description list all jobs for show to user which job is created
    */
   listJobs: async (req, res) => {
     try {
-      const allJobs = await Job.findAll(); // find all job 
-    if (!allJobs) {
-      return res.status(HTTP_STATUS_CODE.BAD_REQUEST).json({
-        status: HTTP_STATUS_CODE.BAD_REQUEST,
+      //pagination
+      let { page, size } = req.body;
+      // Convert  to numbers and set defaults
+      page = Number(page) || 1; // Default to page 1
+      size = Number(size) || 10; // Default page size 10
+      // Calculate offset
+      let offset = (page - 1) * size;
+      let limit = size;
+
+      const allJobs = await Job.findAll({
+        where: { isDeleted: false },
+        order: [["createdAt", "DESC"]],
+        offset: offset,
+        limit: limit,
+      });
+
+      if (!allJobs) {
+        return "No jobs Available";
+      }
+
+      return res.status(HTTP_STATUS_CODE.OK).json({
+        status: HTTP_STATUS_CODE.OK,
         errorCode: "",
-        message: MESSAGES.BAD_REQUEST,
+        message: MESSAGES.OK,
+        data: allJobs,
+        error: "",
+      });
+    } catch (error) {
+      return res.status(HTTP_STATUS_CODE.INTERNAL_SERVER_ERROR).json({
+        status: HTTP_STATUS_CODE.INTERNAL_SERVER_ERROR,
+        errorCode: "",
+        message: error.message,
         data: "",
         error: "",
       });
     }
+  },
 
-    return res.status(HTTP_STATUS_CODE.OK).json({
-      status: HTTP_STATUS_CODE.OK,
-      errorCode: "",
-      message: MESSAGES.OK,
-      data: allJobs,
-      error: "",
-    });
+  /**
+   * @name applyForJob
+   * @file JobController.js
+   * @param {Request} req
+   * @param {Response} res
+   * @description  user can apply in job and also do modification if want and apply
+   */
+  applyForJob: async (req, res) => {
+    try {
+      const {
+        userId,
+        startDate,
+        endDate,
+        amountPerHr,
+        startTime,
+        endTime,
+        jobId,
+      } = req.body;
+      const { error } = validationJobApply(req.body);
+      if (error) {
+        console.log(error);
+        return res.send(error.details);
+      }
+
+      // find job using the jobId
+      const checkJobId = await Job.findOne({
+        where: {
+          [Op.and]: {
+            id: jobId,
+            isDeleted: false,
+          },
+        },
+      });
+      if (!checkJobId) {
+        return res.status(HTTP_STATUS_CODE.BAD_REQUEST).json({
+          status: HTTP_STATUS_CODE.BAD_REQUEST,
+          errorCode: "",
+          message: MESSAGES.BAD_REQUEST,
+          data: "",
+          error: "",
+        });
+      }
+
+      if (checkJobId.createdBy == userId) {
+        return res.status(HTTP_STATUS_CODE.BAD_REQUEST).json({
+          status: HTTP_STATUS_CODE.BAD_REQUEST,
+          errorCode: "",
+          message: MESSAGES.YOU_ARE_NOT_ABLE,
+          data: "",
+          error: "",
+        });
+      }
+
+      const startDateObj = new Date(startDate);
+      const endDateObj = new Date(endDate);
+
+      const dateDifferenceInDays =
+        (endDateObj - startDateObj) / (1000 * 60 * 60 * 24) + 1; // +1 to include both start and end day
+
+      // Calculate total working hours per day
+      const totalHoursPerDay = endTime - startTime;
+
+      // Calculate total earnings
+      const totalMoney = dateDifferenceInDays * totalHoursPerDay * amountPerHr;
+
+      // create pauload for create job
+      const payload = {
+        userId,
+        startDate,
+        endDate,
+        amountPerHr,
+        startTime,
+        endTime,
+        jobId,
+        totalAmount: totalMoney,
+      };
+
+      const storeInDB = await JobApplicant.create(payload); // store this apply request in JobApplicant table
+      if (!storeInDB) {
+        return res.status(HTTP_STATUS_CODE.BAD_REQUEST).json({
+          status: HTTP_STATUS_CODE.BAD_REQUEST,
+          errorCode: "",
+          message: MESSAGES.BAD_REQUEST,
+          data: "",
+          error: "",
+        });
+      }
+
+      return res.status(HTTP_STATUS_CODE.OK).json({
+        status: HTTP_STATUS_CODE.OK,
+        errorCode: "",
+        message: MESSAGES.OK,
+        data: storeInDB,
+        error: "",
+      });
     } catch (error) {
       return res.status(HTTP_STATUS_CODE.INTERNAL_SERVER_ERROR).json({
         status: HTTP_STATUS_CODE.INTERNAL_SERVER_ERROR,
@@ -136,207 +237,124 @@ module.exports = {
     }
   },
 
-
-  /**
-   * @name applyForJob
-   * @file JobController.js
-   * @param {Request} req
-   * @param {Response} res
-   * @description  user can apply in job and also do modification if want and apply
-   */
-  applyForJob: async (req, res) => {
-   try {
-    const { error } = validationJobApply(req.body);
-    if (error) {
-      console.log(error);
-      return res.send(error.details);
-    }
-    const {
-      userId,
-      title,
-      startDate,
-      endDate,
-      amountPerHr,
-      startTime,
-      endTime,
-      jobDescription,
-      isAccepted,
-    } = req.body;
-
-    const jobId = req.query.jobId;
-    // find job using the jobId
-    const checkJobId = await Job.findOne({ where: { id: jobId } });
-    if (!checkJobId) {
-      return res.status(HTTP_STATUS_CODE.BAD_REQUEST).json({
-        status: HTTP_STATUS_CODE.BAD_REQUEST,
-        errorCode: "",
-        message: MESSAGES.BAD_REQUEST,
-        data: "",
-        error: "",
-      });
-    }
-
-    const startDateObj = new Date(startDate);
-    const endDateObj = new Date(endDate);
-
-    const dateDifferenceInDays =
-      (endDateObj - startDateObj) / (1000 * 60 * 60 * 24) + 1; // +1 to include both start and end day
-
-    // Calculate total working hours per day
-    const totalHoursPerDay = endTime - startTime;
-
-    // Calculate total earnings
-    const totalMoney = dateDifferenceInDays * totalHoursPerDay * amountPerHr;
-
-    // create pauload for create job
-    const payload = {
-      title,
-      userId,
-      startDate,
-      endDate,
-      amountPerHr,
-      startTime,
-      endTime,
-      jobDescription,
-      jobId,
-      totalAmount: totalMoney,
-      isAccepted,
-    };
-
-    const storeInDB = await JobApplicant.create(payload); // store this apply request in JobApplicant table
-    if (!storeInDB) {
-      return res.status(HTTP_STATUS_CODE.BAD_REQUEST).json({
-        status: HTTP_STATUS_CODE.BAD_REQUEST,
-        errorCode: "",
-        message: MESSAGES.BAD_REQUEST,
-        data: "",
-        error: "",
-      });
-    }
-
-    return res.status(HTTP_STATUS_CODE.OK).json({
-      status: HTTP_STATUS_CODE.OK,
-      errorCode: "",
-      message: MESSAGES.OK,
-      data: storeInDB,
-      error: "",
-    });
-   } catch (error) {
-    return res.status(HTTP_STATUS_CODE.INTERNAL_SERVER_ERROR).json({
-      status: HTTP_STATUS_CODE.INTERNAL_SERVER_ERROR,
-      errorCode: "",
-      message: MESSAGES.INTERNAL_SERVER_ERROR,
-      data: "",
-      error: "",
-    });
-   }
-  },
-
   /**
    * @name acceptJobRequest
    * @file JobController.js
    * @param {Request} req
    * @param {Response} res
-   * @description createdBy user accept the job request using userid, jobid, startDate and endDate
+   * @description createdBy user accept the job request using userid, jobid
    */
   acceptJobRequest: async (req, res) => {
-  try {
-    const { error } = validationJobRequest(req.body);
-    if (error) {
-      console.log(error);
-      return res.send(error.details);
-    }
-    const { jobId, userId, startDate, endDate } = req.body;
-
-    const user = await JobApplicant.findOne({
-      where: {
-        [Op.and]: [{ jobId }, { userId }],
-      },
-    });
-    if (!user) {
-      return res.status(HTTP_STATUS_CODE.BAD_REQUEST).json({
-        status: HTTP_STATUS_CODE.BAD_REQUEST,
-        errorCode: "",
-        message: MESSAGES.BAD_REQUEST,
-        data: "",
-        error: "",
-      });
-    }
-
-    await JobApplicant.update(
-      { isAccepted: true },
-      { where: { [Op.and]: [{ jobId }, { userId }] } }  // update isAccepted flag in JobApplicant
-    );
-    await Job.update({ isAccepted: true }, { where: { id: jobId } }); // update isAccepted flag in Job
-    const payload = {
-      userId,
-      jobId,
-      startDate,
-      endDate,
-    };
-    const saveInAcpJob = await AcceptedJob.create(payload); // store this in the AcceptedJob 
-    if (!saveInAcpJob) {
-      return res.status(HTTP_STATUS_CODE.BAD_REQUEST).json({
-        status: HTTP_STATUS_CODE.BAD_REQUEST,
-        errorCode: "",
-        message: MESSAGES.BAD_REQUEST,
-        data: "",
-        error: "",
-      });
-    }
-
-    const users = await JobApplicant.findAll({ // find all user for send mail
-      where: { jobId },
-      include: [
-        {
-          model: Job,
-          required: true,
-        },
-        {
-          model: User,
-          attributes: ["email"],
-        },
-      ],
-    });
-
-    // take email of user check flag and send mail related to flag
-    for (const applicant of users) {
-      const email = applicant.user.dataValues.email;
-      const subject = applicant.isAccepted
-        ? "Job Application Accepted"
-        : "Job Application Rejected";
-      const text = applicant.isAccepted
-        ? "Congratulations! You have been selected for the job."
-        : "We regret to inform you that your application was not selected.";
-      try {
-        // Send the email
-        await sendEmail(email, subject, text);
-        console.log(`Email sent to: ${email}`);
-      } catch (error) {
-        console.error("Error sending email to:", email, error);
+    try {
+      const { jobId, userId } = req.body;
+      const { error } = validationJobRequest(req.body);
+      if (error) {
+        console.log(error);
+        return res.send(error.details);
       }
-    }
 
-    return res.status(HTTP_STATUS_CODE.OK).json({
-      status: HTTP_STATUS_CODE.OK,
-      errorCode: "",
-      message: MESSAGES.OK,
-      data: saveInAcpJob,
-      error: "",
-    });
-  } catch (error) {
-    return res.status(HTTP_STATUS_CODE.INTERNAL_SERVER_ERROR).json({
-      status: HTTP_STATUS_CODE.INTERNAL_SERVER_ERROR,
-      errorCode: "",
-      message: MESSAGES.INTERNAL_SERVER_ERROR,
-      data: "",
-      error: "",
-    });
-  }
+      const checkJobIdInDb = await Job.findOne({ where: { id: jobId } });
+      if (checkJobIdInDb) {
+        const user = await JobApplicant.findOne({
+          where: {
+            [Op.and]: [{ jobId }, { userId }],
+          },
+        });
+        if (!user) {
+          return res.status(HTTP_STATUS_CODE.BAD_REQUEST).json({
+            status: HTTP_STATUS_CODE.BAD_REQUEST,
+            errorCode: "",
+            message: MESSAGES.BAD_REQUEST,
+            data: "",
+            error: "",
+          });
+        }
+
+        await JobApplicant.update(
+          { jobStatus: "Accepted" },
+          { where: { [Op.and]: [{ jobId }, { userId }] } } // update isAccepted flag in JobApplicant
+        );
+        await Job.update({ isAccepted: true }, { where: { id: jobId } }); // update isAccepted flag in Job
+
+        const users = await JobApplicant.findAll({
+          // find all user for send mail
+          where: { jobId },
+          include: [
+            {
+              model: Job,
+              required: true,
+            },
+            {
+              model: User,
+              attributes: ["email"],
+            },
+          ],
+        });
+
+
+        const acceptedEmails = users
+          .filter((applicant) => applicant.isAccepted)
+          .map((applicant) => applicant.user.dataValues.email);
+        const rejectedEmails = users
+          .filter((applicant) => !applicant.isAccepted)
+          .map((applicant) => applicant.user.dataValues.email);
+
+        // Email content
+        const subject = MESSAGES.MAIL_STATUS;
+        const textAccepted = MESSAGES.MAIL_FOR_ACCEPTED;
+        const textRejected = MESSAGES.MAIL_FOR_REJECTED;
+
+        // Send emails to accepted applicants
+        if (acceptedEmails.length > 0) {
+          sendBulkEmail(acceptedEmails, subject, textAccepted)
+            .then((info) => {
+              console.log(
+                `Bulk email sent to accepted applicants: ${info.response}`
+              );
+            })
+            .catch((error) => {
+              console.error(
+                "Error sending bulk email to accepted applicants:",
+                error
+              );
+            });
+        }
+
+        // Send emails to rejected applicants
+        if (rejectedEmails.length > 0) {
+          sendBulkEmail(rejectedEmails, subject, textRejected)
+            .then((info) => {
+              console.log(
+                `Bulk email sent to rejected applicants: ${info.response}`
+              );
+            })
+            .catch((error) => {
+              console.error(
+                "Error sending bulk email to rejected applicants:",
+                error
+              );
+            });
+        }
+        return res.status(HTTP_STATUS_CODE.OK).json({
+          status: HTTP_STATUS_CODE.OK,
+          errorCode: "",
+          message: MESSAGES.JOB_ACCEPTED,
+          data: "",
+          error: "",
+        });
+      }
+    } catch (error) {
+      return res.status(HTTP_STATUS_CODE.INTERNAL_SERVER_ERROR).json({
+        status: HTTP_STATUS_CODE.INTERNAL_SERVER_ERROR,
+        errorCode: "",
+        message: error.message,
+        data: "",
+        error: "",
+      });
+    }
   },
 
-
-   /**
+  /**
    * @name updateJob
    * @file JobController.js
    * @param {Request} req
@@ -344,24 +362,31 @@ module.exports = {
    * @description update the job detalis if job createdBy user want
    */
   updateJob: async (req, res) => {
-  try {
-    const {
-      jobId,
-      title,
-      startDate,
-      endDate,
-      amountPerHr,
-      startTime,
-      endTime,
-      jobDescription,
-      isAccepted,
-    } = req.body;
-    const createdBy = req.query.userId;
-    if (createdBy) {
-      const findJob = await Job.findAll({  // find job bu jobId and createdBy 
-        where: { [Op.and]: [{ id: jobId }, { createdBy }] },
+    try {
+      const {
+        userId,
+        jobId,
+        title,
+        startDate,
+        endDate,
+        amountPerHr,
+        startTime,
+        endTime,
+        jobDescription,
+      } = req.body;
+
+      const findJob = await Job.findAll({
+        where: {
+          [Op.and]: [
+            { id: jobId },
+            { createdBy: userId },
+            { isDeleted: false },
+            { isAccepted: false },
+          ],
+        },
       });
-      if (findJob) { // if valid then update the job data 
+      if (findJob) {
+        // if valid then update the job data
         const startDateObj = new Date(startDate);
         const endDateObj = new Date(endDate);
 
@@ -385,40 +410,37 @@ module.exports = {
           endTime,
           jobDescription,
           totalAmount: totalMoney,
-          isAccepted,
-          createdBy,
         };
         // ceate job using payload
         await Job.update(updatedValue, {
           where: { id: jobId },
         });
 
-        return res.status(HTTP_STATUS_CODE.CREATED).json({
-          status: HTTP_STATUS_CODE.CREATED,
+        return res.status(HTTP_STATUS_CODE.OK).json({
+          status: HTTP_STATUS_CODE.OK,
           errorCode: "",
-          message: MESSAGES.CREATED,
+          message: MESSAGES.JOB_UPDATED,
           data: updatedValue,
           error: "",
         });
+      } else {
+        return res.status(HTTP_STATUS_CODE.BAD_REQUEST).json({
+          status: HTTP_STATUS_CODE.BAD_REQUEST,
+          errorCode: "",
+          message: MESSAGES.BAD_REQUEST,
+          data: "",
+          error: "",
+        });
       }
-    } else {
-      return res.status(HTTP_STATUS_CODE.BAD_REQUEST).json({
-        status: HTTP_STATUS_CODE.BAD_REQUEST,
+    } catch (error) {
+      return res.status(HTTP_STATUS_CODE.INTERNAL_SERVER_ERROR).json({
+        status: HTTP_STATUS_CODE.INTERNAL_SERVER_ERROR,
         errorCode: "",
-        message: MESSAGES.BAD_REQUEST,
+        message: error.message,
         data: "",
         error: "",
       });
     }
-  } catch (error) {
-    return res.status(HTTP_STATUS_CODE.INTERNAL_SERVER_ERROR).json({
-      status: HTTP_STATUS_CODE.INTERNAL_SERVER_ERROR,
-      errorCode: "",
-      message: MESSAGES.INTERNAL_SERVER_ERROR,
-      data: "",
-      error: "",
-    });
-  }
   },
 
   /**
@@ -431,35 +453,119 @@ module.exports = {
   deleteJob: async (req, res) => {
     try {
       const { jobId, userId } = req.body;
-    const findJob = await Job.findOne({
-      where: { [Op.and]: [{ id: jobId }, { createdBy: userId }] },
-    });
-    if (!findJob) {
-      return res.status(HTTP_STATUS_CODE.UNAUTHORIZED).json({
-        status: HTTP_STATUS_CODE.UNAUTHORIZED,
-        errorCode: "",
-        message: MESSAGES.UNAUTHORIZED,
-        data: "",
-        error: "",
+      const findJob = await Job.findOne({
+        where: { [Op.and]: [{ id: jobId }, { createdBy: userId }] },
       });
-    }
-
-    await Job.destroy({ where: { id: jobId, createdBy: userId } });
-    return res.status(HTTP_STATUS_CODE.OK).json({
-      status: HTTP_STATUS_CODE.OK,
-      errorCode: "",
-      message: MESSAGES.JOB_DELETE_SUCCESSFULLY,
-      data: "",
-      error: "",
-    });
+      if (!findJob) {
+        return res.status(HTTP_STATUS_CODE.UNAUTHORIZED).json({
+          status: HTTP_STATUS_CODE.UNAUTHORIZED,
+          errorCode: "",
+          message: MESSAGES.UNAUTHORIZED,
+          data: "",
+          error: "",
+        });
+      }
+      if (findJob.isDeleted == false) {
+        await Job.update(
+          { isDeleted: true },
+          { where: { id: jobId, createdBy: userId } }
+        );
+        return res.status(HTTP_STATUS_CODE.OK).json({
+          status: HTTP_STATUS_CODE.OK,
+          errorCode: "",
+          message: MESSAGES.JOB_DELETE_SUCCESSFULLY,
+          data: "",
+          error: "",
+        });
+      }
     } catch (error) {
       return res.status(HTTP_STATUS_CODE.INTERNAL_SERVER_ERROR).json({
         status: HTTP_STATUS_CODE.INTERNAL_SERVER_ERROR,
         errorCode: "",
-        message: MESSAGES.INTERNAL_SERVER_ERROR,
+        message: error.message,
+        data: "",
+        error: "",
+      });
+    }
+  },
+
+  /**
+   * @name userProfileView
+   * @file JobController.js
+   * @param {Request} req
+   * @param {Response} res
+   * @description get the user profile using jobId and useId for show the profile of the user to job creater
+   */
+  userProfileView: async (req, res) => {
+    try {
+      const { userId, jobId } = req.body;
+      const checkUserIdInDb = await JobApplicant.findOne({
+        where: {
+          [Op.and]: {
+            jobId: jobId,
+            userId: userId,
+          },
+        },
+      });
+
+      const userIdForProfile = checkUserIdInDb.dataValues.userId;
+      if (checkUserIdInDb) {
+        const userdetail = await User.findOne({
+          where: { id: userIdForProfile },
+          attributes: ["email"],
+        });
+        return res.status(HTTP_STATUS_CODE.OK).json({
+          status: HTTP_STATUS_CODE.OK,
+          errorCode: "",
+          message: MESSAGES.USER_PROFILE,
+          data: userdetail,
+          error: "",
+        });
+      }
+    } catch (error) {
+      return res.status(HTTP_STATUS_CODE.INTERNAL_SERVER_ERROR).json({
+        status: HTTP_STATUS_CODE.INTERNAL_SERVER_ERROR,
+        errorCode: "",
+        message: error.message,
+        data: "",
+        error: "",
+      });
+    }
+  },
+  /**
+   * @name allUsesInParticularJob
+   * @file JobController.js
+   * @param {Request} req
+   * @param {Response} res
+   * @description get the user profile using jobId and useId for show the profile of the user to job creater
+   */
+  allUsesInParticularJob: async (req, res) => {
+    try {
+      const { jobId } = req.body;
+      const allJobApplicant = await JobApplicant.findAll({
+        where: {
+          jobId: jobId,
+          isDeleted: false,
+        },
+      });
+
+      return res.status(HTTP_STATUS_CODE.OK).json({
+        status: HTTP_STATUS_CODE.OK,
+        errorCode: "",
+        message: MESSAGES.OK,
+        data: allJobApplicant,
+        error: "",
+      });
+    } catch (error) {
+      return res.status(HTTP_STATUS_CODE.INTERNAL_SERVER_ERROR).json({
+        status: HTTP_STATUS_CODE.INTERNAL_SERVER_ERROR,
+        errorCode: "",
+        message: error.message,
         data: "",
         error: "",
       });
     }
   },
 };
+
+

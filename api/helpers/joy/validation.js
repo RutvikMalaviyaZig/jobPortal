@@ -22,26 +22,23 @@ const createJobValidation = Joi.object({
   endTime: Joi.number(),
   jobDescription: Joi.string(),
   totalAmount: Joi.string(),
+  userId : Joi.string()
 });
 
 const applyJob = Joi.object({
   userId: Joi.string(),
-  title: Joi.string(),
+  jobId : Joi.string(),
   startDate: Joi.date(),
   endDate: Joi.date(),
   amountPerHr: Joi.number(),
   startTime: Joi.number(),
   endTime: Joi.number(),
-  jobDescription: Joi.string(),
   totalAmount: Joi.string(),
-  isAccepted: Joi.boolean(),
 });
 
 const jobReqValidstion = Joi.object({
   jobId: Joi.string(),
-  userId: Joi.string(),
-  startDate: Joi.date(),
-  endDate: Joi.date(),
+  userId: Joi.string()
 });
 
 const emailValidation = Joi.object({
