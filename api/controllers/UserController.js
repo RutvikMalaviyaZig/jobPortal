@@ -1,7 +1,8 @@
 const User = require("../models/User");
 const MESSAGES = require("../utils/Messages");
 const HTTP_STATUS_CODE = require("../utils/HttpStatusCodes");
-
+const { STRIPE_PUBLISHABLE_KEY, STRIPE_SECRET_KEY } = process.env;
+const stripe = require("stripe")(STRIPE_SECRET_KEY);
 const {
   validationLogin,
   validationSignup,
@@ -19,18 +20,19 @@ module.exports = {
 
   signup: async (req, res) => {
     try {
+      // take value from the  req.body
+      const { email, password } = req.body;
       // validate req.body
     const { error } = validationSignup(req.body);
     if (error) {
       console.log(error);
       return res.send(error.details);
     }
-    // take value from the  req.body
-    const { email, password } = req.body;
-
+      
     const payload = {
       email, password
     }
+
 
     // check user is already exist or not
     const existEmail = await User.findOne({ where: { email } });
@@ -46,6 +48,18 @@ module.exports = {
 
     // create new user
     const newUser = await User.create(payload);
+    const customer = await stripe.customers.create({
+      email,
+    });
+
+    await User.update(
+      { stripeCustomerId: customer.id },
+      {
+        where: {
+          email,
+        },
+      }
+    );
     return res.status(HTTP_STATUS_CODE.OK).json({
       status: HTTP_STATUS_CODE.OK,
         errorCode: "",
@@ -73,15 +87,15 @@ module.exports = {
    */
   login: async (req, res) => {
    try {
+     // get value from the req.body
+     const { email ,password } = req.body;
      // validate req.body
      const { error } = validationLogin(req.body);
      if (error) {
        console.log(error);
        return res.send(error.details);
      }
-     // get value from the req.body
-     const { email ,password } = req.body;
- 
+     
      // find user using email and password
      const user = await User.findAll({where : {email, password}})
      if (user) {
@@ -94,16 +108,53 @@ module.exports = {
          error: "",
        });
      } else {
-      return res.status(HTTP_STATUS_CODE.INTERNAL_SERVER_ERROR).json({
-        status: HTTP_STATUS_CODE.INTERNAL_SERVER_ERROR,
+      return res.status(HTTP_STATUS_CODE.BAD_REQUEST).json({
+        status: HTTP_STATUS_CODE.BAD_REQUEST,
         errorCode: "",
-        message: MESSAGES.INTERNAL_SERVER_ERROR,
+        message: MESSAGES.BAD_REQUEST,
         data: "",
         error: "",
       });
      }
    } catch (error) {
-    
+    return res.status(HTTP_STATUS_CODE.INTERNAL_SERVER_ERROR).json({
+      status: HTTP_STATUS_CODE.INTERNAL_SERVER_ERROR,
+      errorCode: "",
+      message: error.message,
+      data: "",
+      error: "",
+    });
    }
   },
+
+  /**
+   * @name userProfile
+   * @file UserController.js
+   * @param {Request} req
+   * @param {Response} res
+   * @description get user profile using user id
+   */
+  userProfile : async (req,res) => {
+    try {
+      const {userId}= req.body
+    const userDetails = await User.findOne({where : {id : userId}})
+    if (userDetails) {
+      return res.status(HTTP_STATUS_CODE.OK).json({
+        status: HTTP_STATUS_CODE.OK,
+        errorCode: "",
+        message: MESSAGES.OK,
+        data: userDetails,
+        error: "",
+      });
+    }
+    } catch (error) {
+      return res.status(HTTP_STATUS_CODE.INTERNAL_SERVER_ERROR).json({
+        status: HTTP_STATUS_CODE.INTERNAL_SERVER_ERROR,
+        errorCode: "",
+        message: error.message,
+        data: "",
+        error: "",
+      });
+    }
+  }
 };

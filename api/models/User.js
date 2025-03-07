@@ -2,7 +2,7 @@
 const { DataTypes } = require("sequelize");
 const sequelize = require("../../config/database");
 const JobApplicant = require("./JobApplicant");
-const Payment = require("./Payment");
+
 
 const User = sequelize.define(
   "users",
@@ -60,11 +60,5 @@ const User = sequelize.define(
 User.hasMany(JobApplicant, { foreignKey: 'userId' });
 JobApplicant.belongsTo(User, { foreignKey: 'userId' });
 
-User.hasMany(Payment, {
-  foreignKey : "userId"
-})
-Payment.belongsTo(User, {
-  foreignKey : "userId"
-})
 
 module.exports = User;

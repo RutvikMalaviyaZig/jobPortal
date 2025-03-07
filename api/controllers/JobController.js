@@ -10,6 +10,10 @@ const JobApplicant = require("../models/JobApplicant");
 const User = require("../models/User");
 const { Op, where } = require("sequelize");
 const sendBulkEmail = require("../helpers/mail/sendMail");
+const CardDetails = require("../models/CardDetails");
+
+const { STRIPE_PUBLISHABLE_KEY, STRIPE_SECRET_KEY } = process.env;
+const stripe = require("stripe")(STRIPE_SECRET_KEY);
 
 module.exports = {
   /**
@@ -87,7 +91,7 @@ module.exports = {
   /**
    * @name listJobs
    * @file JobController.js
-   * @param {Request} req
+   * @param {Request} reqz
    * @param {Response} res
    * @description list all jobs for show to user which job is created
    */
@@ -246,113 +250,126 @@ module.exports = {
    */
   acceptJobRequest: async (req, res) => {
     try {
-      const { jobId, userId } = req.body;
+      const { jobId, userId, creatorId } = req.body;
       const { error } = validationJobRequest(req.body);
       if (error) {
         console.log(error);
         return res.send(error.details);
       }
 
-      const checkJobIdInDb = await Job.findOne({ where: { id: jobId } });
-      if (checkJobIdInDb) {
-        const user = await JobApplicant.findOne({
-          where: {
-            [Op.and]: [{ jobId }, { userId }],
-          },
-        });
-        if (!user) {
-          return res.status(HTTP_STATUS_CODE.BAD_REQUEST).json({
-            status: HTTP_STATUS_CODE.BAD_REQUEST,
+      const checkCratedBy = await Job.findOne({
+        where: { createdBy: creatorId },
+      });
+      if (checkCratedBy) {
+        const checkJobIdInDb = await Job.findOne({ where: { id: jobId } });
+        if (checkJobIdInDb) {
+          const user = await JobApplicant.findOne({
+            where: {
+              [Op.and]: [{ jobId }, { userId }],
+            },
+          });
+          if (!user) {
+            return res.status(HTTP_STATUS_CODE.BAD_REQUEST).json({
+              status: HTTP_STATUS_CODE.BAD_REQUEST,
+              errorCode: "",
+              message: MESSAGES.BAD_REQUEST,
+              data: "",
+              error: "",
+            });
+          }
+
+          await JobApplicant.update(
+            { jobStatus: "Accepted" },
+            { where: { [Op.and]: [{ jobId }, { userId }] } } // update isAccepted flag in JobApplicant
+          );
+          await JobApplicant.update(
+            { jobStatus: "Rejected" },
+            {
+              where: {
+                [Op.and]: [
+                  { jobId: jobId }, // jobId should be equal to the given jobId
+                  { userId: { [Op.ne]: userId } }, // userId should not be equal to the given userId
+                ],
+              },
+            }
+          );
+        const jobDone =  await Job.update({ isAccepted: true }, { where: { id: jobId } }); // update isAccepted flag in Job
+
+          const users = await JobApplicant.findAll({
+            // find all user for send mail
+            where: { jobId },
+            include: [
+              {
+                model: Job,
+                required: true,
+              },
+              {
+                model: User,
+                attributes: ["email"],
+              },
+            ],
+          });
+
+          const acceptedEmails = users
+            .filter((applicant) => applicant.jobStatus == 'Accepted')
+            .map((applicant) => applicant.user.dataValues.email);
+       
+          const rejectedEmails = users
+            .filter((applicant) => applicant.jobStatus == 'Rejected')
+            .map((applicant) => applicant.user.dataValues.email);
+          
+          // Email content
+          const subject = MESSAGES.MAIL_STATUS;
+          const textAccepted = MESSAGES.MAIL_FOR_ACCEPTED;
+          const textRejected = MESSAGES.MAIL_FOR_REJECTED;
+
+          // Send emails to accepted applicants
+          if (acceptedEmails.length > 0) {
+            sendBulkEmail(acceptedEmails, subject, textAccepted)
+              .then((info) => {
+                console.log(
+                  `Bulk email sent to accepted applicants: ${info.response}`
+                );
+              })
+              .catch((error) => {
+                console.error(
+                  "Error sending bulk email to accepted applicants:",
+                  error
+                );
+              });
+          }
+
+          // Send emails to rejected applicants
+          if (rejectedEmails.length > 0) {
+            sendBulkEmail(rejectedEmails, subject, textRejected)
+              .then((info) => {
+                console.log(
+                  `Bulk email sent to rejected applicants: ${info.response}`
+                );
+              })
+              .catch((error) => {
+                console.error(
+                  "Error sending bulk email to rejected applicants:",
+                  error
+                );
+              });
+          }
+          return res.status(HTTP_STATUS_CODE.OK).json({
+            status: HTTP_STATUS_CODE.OK,
             errorCode: "",
-            message: MESSAGES.BAD_REQUEST,
-            data: "",
+            message: MESSAGES.JOB_ACCEPTED,
+            data: jobDone,
             error: "",
           });
         }
-
-        await JobApplicant.update(
-          { jobStatus: "Accepted" },
-          { where: { [Op.and]: [{ jobId }, { userId }] } } // update isAccepted flag in JobApplicant
-        );
-        await JobApplicant.update(
-          { jobStatus: "Rejected" },
-          {
-            where: {
-              [Op.and]: [
-                { jobId: jobId }, // jobId should be equal to the given jobId
-                { userId: { [Op.ne]: userId } }, // userId should not be equal to the given userId
-              ],
-            },
-          }
-        );
-        await Job.update({ isAccepted: true }, { where: { id: jobId } }); // update isAccepted flag in Job
-
-        const users = await JobApplicant.findAll({
-          // find all user for send mail
-          where: { jobId },
-          include: [
-            {
-              model: Job,
-              required: true,
-            },
-            {
-              model: User,
-              attributes: ["email"],
-            },
-          ],
-        });
-
-        const acceptedEmails = users
-          .filter((applicant) => applicant.isAccepted)
-          .map((applicant) => applicant.user.dataValues.email);
-        const rejectedEmails = users
-          .filter((applicant) => !applicant.isAccepted)
-          .map((applicant) => applicant.user.dataValues.email);
-
-        // Email content
-        const subject = MESSAGES.MAIL_STATUS;
-        const textAccepted = MESSAGES.MAIL_FOR_ACCEPTED;
-        const textRejected = MESSAGES.MAIL_FOR_REJECTED;
-
-        // Send emails to accepted applicants
-        if (acceptedEmails.length > 0) {
-          sendBulkEmail(acceptedEmails, subject, textAccepted)
-            .then((info) => {
-              console.log(
-                `Bulk email sent to accepted applicants: ${info.response}`
-              );
-            })
-            .catch((error) => {
-              console.error(
-                "Error sending bulk email to accepted applicants:",
-                error
-              );
-            });
-        }
-
-        // Send emails to rejected applicants
-        if (rejectedEmails.length > 0) {
-          sendBulkEmail(rejectedEmails, subject, textRejected)
-            .then((info) => {
-              console.log(
-                `Bulk email sent to rejected applicants: ${info.response}`
-              );
-            })
-            .catch((error) => {
-              console.error(
-                "Error sending bulk email to rejected applicants:",
-                error
-              );
-            });
-        }
-        return res.status(HTTP_STATUS_CODE.OK).json({
-          status: HTTP_STATUS_CODE.OK,
-          errorCode: "",
-          message: MESSAGES.JOB_ACCEPTED,
-          data: "",
-          error: "",
-        });
       }
+      return res.status(HTTP_STATUS_CODE.UNAUTHORIZED).json({
+        status: HTTP_STATUS_CODE.UNAUTHORIZED,
+        errorCode: "",
+        message: MESSAGES.YOU_ARE_NOT_ABLE_TO_ACCEPT_IT,
+        data: "",
+        error: "",
+      });
     } catch (error) {
       return res.status(HTTP_STATUS_CODE.INTERNAL_SERVER_ERROR).json({
         status: HTTP_STATUS_CODE.INTERNAL_SERVER_ERROR,
@@ -506,7 +523,7 @@ module.exports = {
    * @param {Response} res
    * @description view the perticular user profile
    */
-  userProfileView: async (req, res) => {
+  userProfileViewInJob: async (req, res) => {
     try {
       const { userId, jobId } = req.body;
       const checkUserIdInDb = await JobApplicant.findOne({
@@ -609,8 +626,7 @@ module.exports = {
     }
   },
 
-
-   /**
+  /**
    * @name viweJobsWhereUserApplied
    * @file JobController.js
    * @param {Request} req
@@ -618,7 +634,7 @@ module.exports = {
    * @description view all jobs where user is applyed
    */
 
-   viweJobsWhereUserApplied : async (req,res) => {
+  viweJobsWhereUserApplied: async (req, res) => {
     try {
       const { userId } = req.body;
       const allJobApplicant = await JobApplicant.findAll({
@@ -643,5 +659,191 @@ module.exports = {
         error: "",
       });
     }
-   },
+  },
+
+  /**
+   * @name jobPayment
+   * @file JobController.js
+   * @param {Request} req
+   * @param {Response} res
+   * @description pay money to user on last date based on total amount and total Work Day
+   */
+  jobPayment: async (req, res) => {
+    try {
+      const { jobId, userId, totalWorkedDay, currency } = req.body;
+
+      const jobIdCheckInJob = await Job.findOne({ where: { id: jobId } });
+      if (!jobIdCheckInJob) {
+        return res.status(HTTP_STATUS_CODE.BAD_REQUEST).json({
+          status: HTTP_STATUS_CODE.BAD_REQUEST,
+          errorCode: "",
+          message: MESSAGES.JOB_NOT_FOUND,
+          data: "",
+          error: "",
+        });
+      }
+
+      const userIdCheckIndUser = await User.findOne({ where: { id: userId } });
+      if (!userIdCheckIndUser) {
+        return res.status(HTTP_STATUS_CODE.BAD_REQUEST).json({
+          status: HTTP_STATUS_CODE.BAD_REQUEST,
+          errorCode: "",
+          message: MESSAGES.USER_NOT_FOUND,
+          data: "",
+          error: "",
+        });
+      }
+
+      const jobStatus = "Accepted";
+      const checkInJobApplicant = await JobApplicant.findOne({
+        where: {
+          [Op.and]: [
+            { jobId: jobId },
+            { userId: userId },
+            { jobStatus: jobStatus },
+          ],
+        },
+      });
+
+      const endDate = new Date(checkInJobApplicant.endDate);
+      const amountPerHr = checkInJobApplicant.amountPerHr;
+      const totalTimePerDay =
+        checkInJobApplicant.endTime - checkInJobApplicant.startTime;
+
+      const totalAmount = totalWorkedDay * totalTimePerDay * amountPerHr;
+      const today = new Date();
+      today.setHours(0, 0, 0, 0);
+
+      console.log(today.toDateString() === endDate.toDateString());
+      if (today.toDateString() === endDate.toDateString()) {
+        // Create Stripe PaymentIntent
+        const checkCustomerId = await userIdCheckIndUser.stripeCustomerId;
+        
+        if (checkCustomerId) {
+          const token = await stripe.tokens.retrieve("tok_visa");
+
+          // Check if the card already exists
+          const cardExist = await CardDetails.findOne({
+            where: { cardLast4Digit: token.card.last4 },
+          });
+          if (!cardExist) {
+            console.log("111111");
+            // Create new card entry in the database
+            await CardDetails.create({
+              cardId: token.card.id,
+              cardExpYear: token.card.exp_year,
+              cardExpMonth: token.card.exp_month,
+              cardLast4Digit: token.card.last4,
+            });
+  
+            console.log("object");
+            // Add card to the customer's Stripe account
+            const customerSource = await stripe.customers.createSource(
+              checkCustomerId,
+              {
+                source: token.id,
+              }
+            );
+  
+            // Set the new card as the default card for the customer
+            const updatedCustomer = await stripe.customers.update(customerId, {
+              default_source: customerSource.id,
+            });
+            const paymentIntent = await stripe.paymentIntents.create({
+              amount: totalAmount * 100,
+              currency: currency,
+              customer: checkCustomerId,
+              confirm: true,
+              automatic_payment_methods: {
+                enabled: true, // Enable automatic payment methods
+                allow_redirects: "never", // Avoid redirects
+              },
+            });
+  
+            if (paymentIntent.status === "succeeded") {
+              await CardDetails.update({
+                paymentId: paymentIntent.id,
+                isPaymentDone: true,
+              }, {where : {
+                cardId: token.card.id,
+              }});
+              return res.status(HTTP_STATUS_CODE.OK).json({
+                status: HTTP_STATUS_CODE.OK,
+                message: MESSAGES.PAYMENT_SUCCESSFULL,
+                data: {
+                  customerSource,
+                  updatedCustomer,
+                  paymentIntent,
+                },
+              });
+            } else {
+              return res.status(HTTP_STATUS_CODE.BAD_REQUEST).json({
+                status: HTTP_STATUS_CODE.BAD_REQUEST,
+                message: MESSAGES.YOUR_PAYMENT_FAIELD,
+                data: "",
+                error: "",
+              });
+            }
+          }
+  
+          // If the card already exists, create payment intent directly
+          const paymentIntent = await stripe.paymentIntents.create({
+            amount: totalAmount * 100,
+            currency: currency,
+            customer: checkCustomerId,
+            confirm: true,
+            automatic_payment_methods: {
+              enabled: true, // Enable automatic payment methods
+              allow_redirects: "never", // Avoid redirects
+            },
+          });
+          if (paymentIntent.status == 'succeeded') {
+            await CardDetails.update({
+              paymentId: paymentIntent.id,
+              isPaymentDone: true,
+            }, {where : {
+              cardId: token.card.id,
+            }});
+            return res.status(HTTP_STATUS_CODE.OK).json({
+              status: HTTP_STATUS_CODE.OK,
+              message: MESSAGES.CARD_ALREADY_EXIST,
+              data: {
+                paymentIntent,
+              },
+            });
+          } else {
+            return res.status(HTTP_STATUS_CODE.BAD_REQUEST).json({
+              status: HTTP_STATUS_CODE.BAD_REQUEST,
+              message: MESSAGES.YOUR_PAYMENT_FAIELD,
+              data: "",
+              error: "",
+            });
+          }
+        }
+  
+        // if no customer id then return
+        return res.status(HTTP_STATUS_CODE.BAD_REQUEST).json({
+          status: HTTP_STATUS_CODE.BAD_REQUEST,
+          message: MESSAGES.CUSTOMERID_NOT_EXITS,
+          data: {
+            paymentIntent,
+          },
+        });
+      }
+
+      return res.status(HTTP_STATUS_CODE.BAD_REQUEST).json({
+        status: HTTP_STATUS_CODE.BAD_REQUEST,
+        message: MESSAGES.BAD_REQUEST,
+        data: "",
+      });
+    } catch (error) {
+      return res.status(HTTP_STATUS_CODE.INTERNAL_SERVER_ERROR).json({
+        status: HTTP_STATUS_CODE.INTERNAL_SERVER_ERROR,
+        errorCode: "",
+        message: error.message,
+        data: "",
+        error: "",
+      });
+    }
+  },
 };

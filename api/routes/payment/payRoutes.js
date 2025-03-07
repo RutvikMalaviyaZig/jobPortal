@@ -21,13 +21,9 @@ const paymentController = require("../../controllers/paymentController");
 // Route for creating a customer
 router.post("/create-customer", paymentController.createCustomer);
 
-// Route for adding a new card to the customer
-router.post("/add-card", paymentController.addNewCard);
+// Route for adding a new card to the customer set it default and do payment
+router.post("/add-card-and-payment", paymentController.addNewCardAndPayment);
 
-// Route for creating a payment intent
-router.post("/payment-intent", paymentController.paymentIntent);
 
-// Route for creating a charge (processing a payment)
-// router.post("/create-charge", paymentController.createCharges);
 
 module.exports = router;

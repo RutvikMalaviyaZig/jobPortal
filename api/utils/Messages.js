@@ -19,6 +19,7 @@ const MESSAGES = {
   GATEWAY_TIMEOUT: "The request timed out while waiting for a response.",
   ALL_FIELDS_REQUIRED: "All fields are required",
   EMAIL_ALREADY_EXIST: "Email already exist",
+  EMAIL_NOT_EXIST : " Email not exist plz signu/login",
   MOBILE_ALREADY_EXIST: "Mobile already exist",
   USER_NOT_FOUND: "User not found",
   INVALID_PASSWORD: "Invalid password",
@@ -29,8 +30,6 @@ const MESSAGES = {
   PASSWORD_RESET_SUCCESSFUL: "Password reset successful",
   PASSWORD_RESET_ERROR: "Error resetting password",
   RESET_LINK_SENT: "Reset link sent",
-  FILE_NOT_UPLOADED: "file not uploaded",
-  FILE_UPLOADED_SUCCESSFULLY: "file uploaded successfully",
   USER_CREATED: "user created successfully",
   PLZ_SIGNUP_LOGIN: "Plz signup/login",
   USER_LOGOUT: "user logout ",
@@ -40,17 +39,25 @@ const MESSAGES = {
   CUSTOMER_ID_CREATED: "customer id created successfully",
   PAYMENT_SUCCESSFULL: "payment successfully done",
   TOKEN_REQUIRED: "Token is required to create card",
-  PAYMENT_METHOD_ATTACHED: "Payment method successfully created and attached!",
+  CARD_ADDED: "card added successfully",
   USER_PROFILE: " user profile is get successfully",
   YOU_ARE_NOT_ABLE: "you create the job so you can not apply in it",
+  YOU_ARE_NOT_ABLE_TO_ACCEPT_IT : "you are not creater so you can not accept it",
   JOB_ACCEPTED : "job accepted",
   JOB_UPDATED : "job is updated successfully",
   GET_JOB_DETAILS_SUCCESSFULLY : "get job details success fully",
+  CUSTOMERID_NOT_EXITS : "CustomrId is not exists",
+  YOUR_PAYMENT_FAIELD : "your payment is faield",
+  JOB_NOT_FOUND : "job not found",
 
   // mail contents
   MAIL_SUBJECT : "Job Application Status",
   MAIL_FOR_ACCEPTED: "Congratulations! You have been selected for the job.",
   MAIL_FOR_REJECTED: "We regret to inform you that your application was not selected.",
+
+
+  // card releted
+  CARD_ALREADY_EXIST : "your given card details is already exist"
 };
 
 module.exports = MESSAGES;

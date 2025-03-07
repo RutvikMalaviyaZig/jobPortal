@@ -38,7 +38,8 @@ const applyJob = Joi.object({
 
 const jobReqValidstion = Joi.object({
   jobId: Joi.string(),
-  userId: Joi.string()
+  userId: Joi.string(),
+  creatorId : Joi.string()
 });
 
 const emailValidation = Joi.object({

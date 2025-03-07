@@ -9,9 +9,10 @@ router.post('/applyforjob', JobController.applyForJob)
 router.post('/acceptjob', JobController.acceptJobRequest)
 router.put('/updatejob', JobController.updateJob)
 router.post('/deletejob', JobController.deleteJob)
-router.get('/userprofile', JobController.userProfileView)
+router.get('/userprofile', JobController.userProfileViewInJob)
 router.get('/jobusersdetails', JobController.allUsesInParticularJob)
 router.get('/getjobdetails', JobController.viewJobDetails)
 router.get('/userappliedjobs', JobController.viweJobsWhereUserApplied)
+router.post('/jobpayment', JobController.jobPayment)
 
 module.exports = router;

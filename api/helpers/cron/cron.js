@@ -12,7 +12,6 @@ const { Op } = require("sequelize");
 cron.schedule("0 9 * * *", async () => {
     try {
         const tomorrow = new Date();
-        console.log(tomorrow);
         tomorrow.setDate(tomorrow.getDate() + 1); // get date and add one
         tomorrow.setHours(0, 0, 0, 0);
         const jobsStartingTomorrow = await Job.findAll({  // find in database where startDate is tommorrow
