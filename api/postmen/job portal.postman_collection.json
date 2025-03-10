@@ -10,13 +10,106 @@
 			"name": "auth",
 			"item": [
 				{
-					"name": "Email Login",
+					"name": "signup",
 					"request": {
 						"method": "POST",
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n    \"email\": \"two@gmail.com\",\n    \"password\" : \"12345\"\n}",
+							"raw": "{\n    \"email\" : \"four@gmail.com\",\n    \"password\" : \"12345\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{local}}/api/v1/user/signup",
+							"host": [
+								"{{local}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"user",
+								"signup"
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "signup",
+							"originalRequest": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"email\" : \"four@gmail.com\",\n    \"password\" : \"12345\"\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{local}}/api/v1/user/signup",
+									"host": [
+										"{{local}}"
+									],
+									"path": [
+										"api",
+										"v1",
+										"user",
+										"signup"
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "X-Powered-By",
+									"value": "Express"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json; charset=utf-8"
+								},
+								{
+									"key": "Content-Length",
+									"value": "86"
+								},
+								{
+									"key": "ETag",
+									"value": "W/\"56-nn3PPgm6egporT35TwLIH9Og7ko\""
+								},
+								{
+									"key": "Date",
+									"value": "Fri, 07 Mar 2025 11:23:06 GMT"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								},
+								{
+									"key": "Keep-Alive",
+									"value": "timeout=5"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"status\": 200,\n    \"errorCode\": \"\",\n    \"message\": \"Request was successful.\",\n    \"data\": \"\",\n    \"error\": \"\"\n}"
+						}
+					]
+				},
+				{
+					"name": "email login",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"email\" : \"three@gmail.com\",\n    \"password\" : \"12345\"\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -38,13 +131,13 @@
 					},
 					"response": [
 						{
-							"name": "Email Login",
+							"name": "email login",
 							"originalRequest": {
 								"method": "POST",
 								"header": [],
 								"body": {
 									"mode": "raw",
-									"raw": "{\n    \"email\": \"two@gmail.com\",\n    \"password\" : \"12345\"\n}",
+									"raw": "{\n    \"email\" : \"three@gmail.com\",\n    \"password\" : \"12345\"\n}",
 									"options": {
 										"raw": {
 											"language": "json"
@@ -78,15 +171,15 @@
 								},
 								{
 									"key": "Content-Length",
-									"value": "269"
+									"value": "311"
 								},
 								{
 									"key": "ETag",
-									"value": "W/\"10d-CLFcasFRp45CKPq1E5ssHkWQOkE\""
+									"value": "W/\"137-1UhVxdBkdHnDdgOsEdvTqT9QUnA\""
 								},
 								{
 									"key": "Date",
-									"value": "Tue, 04 Mar 2025 05:33:33 GMT"
+									"value": "Fri, 07 Mar 2025 11:22:38 GMT"
 								},
 								{
 									"key": "Connection",
@@ -98,18 +191,21 @@
 								}
 							],
 							"cookie": [],
-							"body": "{\n    \"status\": 200,\n    \"errorCode\": \"\",\n    \"message\": \"Request was successful.\",\n    \"data\": [\n        {\n            \"id\": \"698f2737-327b-457d-bf19-00df5993dad2\",\n            \"email\": \"two@gmail.com\",\n            \"password\": \"12345\",\n            \"createdAt\": \"2025-03-04T00:02:39.940Z\",\n            \"updatedAt\": \"2025-03-04T00:02:39.940Z\",\n            \"deletedAt\": null\n        }\n    ],\n    \"error\": \"\"\n}"
+							"body": "{\n    \"status\": 200,\n    \"errorCode\": \"\",\n    \"message\": \"Request was successful.\",\n    \"data\": [\n        {\n            \"id\": \"62635fc6-8e5e-4efa-9c64-eeb6d0857719\",\n            \"email\": \"three@gmail.com\",\n            \"password\": \"12345\",\n            \"stripeCustomerId\": \"cus_RtmXZWIKKWF4qZ\",\n            \"createdAt\": \"2025-03-07T05:52:02.363Z\",\n            \"updatedAt\": \"2025-03-07T05:52:02.805Z\",\n            \"deletedAt\": null\n        }\n    ],\n    \"error\": \"\"\n}"
 						}
 					]
 				},
 				{
-					"name": "signup",
+					"name": "view user profile",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
 					"request": {
-						"method": "POST",
+						"method": "GET",
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n    \"email\" : \"two@gmail.com\",\n    \"password\" : \"12345\"\n}",
+							"raw": "{\n    \"userId\" : \"62635fc6-8e5e-4efa-9c64-eeb6d0857719\"\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -117,7 +213,7 @@
 							}
 						},
 						"url": {
-							"raw": "{{local}}/api/v1/user/signup",
+							"raw": "{{local}}/api/v1/user/userprofile",
 							"host": [
 								"{{local}}"
 							],
@@ -125,19 +221,19 @@
 								"api",
 								"v1",
 								"user",
-								"signup"
+								"userprofile"
 							]
 						}
 					},
 					"response": [
 						{
-							"name": "signup",
+							"name": "New Request",
 							"originalRequest": {
-								"method": "POST",
+								"method": "GET",
 								"header": [],
 								"body": {
 									"mode": "raw",
-									"raw": "{\n    \"email\" : \"one1@gmail.com\",\n    \"password\" : \"12345\"\n}",
+									"raw": "{\n    \"userId\" : \"62635fc6-8e5e-4efa-9c64-eeb6d0857719\"\n}",
 									"options": {
 										"raw": {
 											"language": "json"
@@ -145,7 +241,7 @@
 									}
 								},
 								"url": {
-									"raw": "{{local}}/api/v1/user/signup",
+									"raw": "{{local}}/api/v1/user/userprofile",
 									"host": [
 										"{{local}}"
 									],
@@ -153,7 +249,7 @@
 										"api",
 										"v1",
 										"user",
-										"signup"
+										"userprofile"
 									]
 								}
 							},
@@ -171,15 +267,15 @@
 								},
 								{
 									"key": "Content-Length",
-									"value": "268"
+									"value": "309"
 								},
 								{
 									"key": "ETag",
-									"value": "W/\"10c-14PppwWMUS8dMrdiJMHrxVX5a8Y\""
+									"value": "W/\"135-sjc+molmcknGmpIFvS1I+5vaALI\""
 								},
 								{
 									"key": "Date",
-									"value": "Mon, 03 Mar 2025 12:52:10 GMT"
+									"value": "Fri, 07 Mar 2025 12:29:26 GMT"
 								},
 								{
 									"key": "Connection",
@@ -191,70 +287,7 @@
 								}
 							],
 							"cookie": [],
-							"body": "{\n    \"status\": 200,\n    \"errorCode\": \"\",\n    \"message\": \"Request was successful.\",\n    \"data\": {\n        \"id\": \"872fcdcf-0e94-4808-96e5-7b39f2b4dd23\",\n        \"email\": \"one1@gmail.com\",\n        \"password\": \"12345\",\n        \"updatedAt\": \"2025-03-03T07:22:10.593Z\",\n        \"createdAt\": \"2025-03-03T07:22:10.593Z\",\n        \"deletedAt\": null\n    },\n    \"error\": \"\"\n}"
-						},
-						{
-							"name": "signup",
-							"originalRequest": {
-								"method": "POST",
-								"header": [],
-								"body": {
-									"mode": "raw",
-									"raw": "{\n    \"email\" : \"two@gmail.com\",\n    \"password\" : \"12345\"\n}",
-									"options": {
-										"raw": {
-											"language": "json"
-										}
-									}
-								},
-								"url": {
-									"raw": "{{local}}/api/v1/user/signup",
-									"host": [
-										"{{local}}"
-									],
-									"path": [
-										"api",
-										"v1",
-										"user",
-										"signup"
-									]
-								}
-							},
-							"status": "OK",
-							"code": 200,
-							"_postman_previewlanguage": "json",
-							"header": [
-								{
-									"key": "X-Powered-By",
-									"value": "Express"
-								},
-								{
-									"key": "Content-Type",
-									"value": "application/json; charset=utf-8"
-								},
-								{
-									"key": "Content-Length",
-									"value": "267"
-								},
-								{
-									"key": "ETag",
-									"value": "W/\"10b-5AgPuXZZhFp2qDGSvYktICQRpZU\""
-								},
-								{
-									"key": "Date",
-									"value": "Tue, 04 Mar 2025 05:32:39 GMT"
-								},
-								{
-									"key": "Connection",
-									"value": "keep-alive"
-								},
-								{
-									"key": "Keep-Alive",
-									"value": "timeout=5"
-								}
-							],
-							"cookie": [],
-							"body": "{\n    \"status\": 200,\n    \"errorCode\": \"\",\n    \"message\": \"Request was successful.\",\n    \"data\": {\n        \"id\": \"698f2737-327b-457d-bf19-00df5993dad2\",\n        \"email\": \"two@gmail.com\",\n        \"password\": \"12345\",\n        \"updatedAt\": \"2025-03-04T00:02:39.940Z\",\n        \"createdAt\": \"2025-03-04T00:02:39.940Z\",\n        \"deletedAt\": null\n    },\n    \"error\": \"\"\n}"
+							"body": "{\n    \"status\": 200,\n    \"errorCode\": \"\",\n    \"message\": \"Request was successful.\",\n    \"data\": {\n        \"id\": \"62635fc6-8e5e-4efa-9c64-eeb6d0857719\",\n        \"email\": \"three@gmail.com\",\n        \"password\": \"12345\",\n        \"stripeCustomerId\": \"cus_RtmXZWIKKWF4qZ\",\n        \"createdAt\": \"2025-03-07T05:52:02.363Z\",\n        \"updatedAt\": \"2025-03-07T05:52:02.805Z\",\n        \"deletedAt\": null\n    },\n    \"error\": \"\"\n}"
 						}
 					]
 				}
@@ -270,7 +303,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n    \"title\" : \"web developer\",\n    \"startDate\" : \"2025-03-03\",\n    \"endDate\" : \"2025-03-10\",\n    \"amountPerHr\" : 40,\n    \"startTime\" : 10,\n    \"endTime\" : 18,\n    \"jobDescription\" : \"Requirement for web developer\"\n}",
+							"raw": "{\n    \"title\" : \"python intern\",\n    \"startDate\" : \"2025-03-03\",\n    \"endDate\" : \"2025-03-10\",\n    \"amountPerHr\" : 40,\n    \"startTime\" : 10,\n    \"endTime\" : 18,\n    \"jobDescription\" : \"Requirement for web developer\",\n    \"userId\" : \"19600d02-2824-478b-85d8-03009614d32d\"\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -278,7 +311,7 @@
 							}
 						},
 						"url": {
-							"raw": "{{local}}/api/v1/job/create?userId=343185d7-9ffc-432e-a526-8c90b51ecdbb",
+							"raw": "{{local}}/api/v1/job/create",
 							"host": [
 								"{{local}}"
 							],
@@ -291,7 +324,8 @@
 							"query": [
 								{
 									"key": "userId",
-									"value": "343185d7-9ffc-432e-a526-8c90b51ecdbb"
+									"value": "343185d7-9ffc-432e-a526-8c90b51ecdbb",
+									"disabled": true
 								}
 							]
 						}
@@ -304,7 +338,7 @@
 								"header": [],
 								"body": {
 									"mode": "raw",
-									"raw": "{\n    \"title\" : \"Mern stack\",\n    \"startDate\" : \"2025-03-03\",\n    \"endDate\" : \"2025-03-10\",\n    \"amountPerHr\" : 50,\n    \"startTime\" : 10,\n    \"endTime\" : 18,\n    \"jobDescription\" : \"Requirement for Mern stack\"\n}",
+									"raw": "{\n    \"title\" : \"mern developer\",\n    \"startDate\" : \"2025-03-03\",\n    \"endDate\" : \"2025-03-10\",\n    \"amountPerHr\" : 40,\n    \"startTime\" : 10,\n    \"endTime\" : 18,\n    \"jobDescription\" : \"Requirement for web developer\",\n    \"userId\" : \"19600d02-2824-478b-85d8-03009614d32d\"\n}",
 									"options": {
 										"raw": {
 											"language": "json"
@@ -312,7 +346,7 @@
 									}
 								},
 								"url": {
-									"raw": "{{local}}/api/v1/job/create?userId=343185d7-9ffc-432e-a526-8c90b51ecdbb",
+									"raw": "{{local}}/api/v1/job/create",
 									"host": [
 										"{{local}}"
 									],
@@ -325,7 +359,8 @@
 									"query": [
 										{
 											"key": "userId",
-											"value": "343185d7-9ffc-432e-a526-8c90b51ecdbb"
+											"value": "343185d7-9ffc-432e-a526-8c90b51ecdbb",
+											"disabled": true
 										}
 									]
 								}
@@ -344,15 +379,15 @@
 								},
 								{
 									"key": "Content-Length",
-									"value": "468"
+									"value": "539"
 								},
 								{
 									"key": "ETag",
-									"value": "W/\"1d4-MCi/ywyRJRo2jZuU3Bj/kc4Eumg\""
+									"value": "W/\"21b-z4qiCs7sMIvzlE24Bn07wyhtBso\""
 								},
 								{
 									"key": "Date",
-									"value": "Tue, 04 Mar 2025 05:30:48 GMT"
+									"value": "Fri, 07 Mar 2025 11:23:38 GMT"
 								},
 								{
 									"key": "Connection",
@@ -364,7 +399,7 @@
 								}
 							],
 							"cookie": [],
-							"body": "{\n    \"status\": 201,\n    \"errorCode\": \"\",\n    \"message\": \"Resource was created successfully.\",\n    \"data\": {\n        \"id\": \"7e5e5c96-f23c-4d50-984b-493d11f64699\",\n        \"isAccepted\": false,\n        \"title\": \"Mern stack\",\n        \"startDate\": \"2025-03-02T18:30:00.000Z\",\n        \"endDate\": \"2025-03-09T18:30:00.000Z\",\n        \"amountPerHr\": 50,\n        \"startTime\": 10,\n        \"endTime\": 18,\n        \"totalAmount\": \"3200\",\n        \"createdBy\": \"343185d7-9ffc-432e-a526-8c90b51ecdbb\",\n        \"updatedAt\": \"2025-03-04T00:00:48.490Z\",\n        \"createdAt\": \"2025-03-04T00:00:48.490Z\",\n        \"deletedAt\": null\n    },\n    \"error\": \"\"\n}"
+							"body": "{\n    \"status\": 201,\n    \"errorCode\": \"\",\n    \"message\": \"Resource was created successfully.\",\n    \"data\": {\n        \"id\": \"0b0922f1-ad60-408e-8c8f-3674060590dd\",\n        \"isAccepted\": false,\n        \"isDeleted\": false,\n        \"title\": \"mern developer\",\n        \"startDate\": \"2025-03-02T18:30:00.000Z\",\n        \"endDate\": \"2025-03-09T18:30:00.000Z\",\n        \"amountPerHr\": 40,\n        \"startTime\": 10,\n        \"endTime\": 18,\n        \"jobDescription\": \"Requirement for web developer\",\n        \"totalAmount\": \"2560\",\n        \"createdBy\": \"19600d02-2824-478b-85d8-03009614d32d\",\n        \"updatedAt\": \"2025-03-07T05:53:38.792Z\",\n        \"createdAt\": \"2025-03-07T05:53:38.792Z\",\n        \"deletedAt\": null\n    },\n    \"error\": \"\"\n}"
 						},
 						{
 							"name": "create job",
@@ -373,7 +408,7 @@
 								"header": [],
 								"body": {
 									"mode": "raw",
-									"raw": "{\n    \"title\" : \"web developer\",\n    \"startDate\" : \"2025-03-03\",\n    \"endDate\" : \"2025-03-10\",\n    \"amountPerHr\" : 40,\n    \"startTime\" : 10,\n    \"endTime\" : 18,\n    \"jobDescription\" : \"Requirement for web developer\"\n}",
+									"raw": "{\n    \"title\" : \"web developer\",\n    \"startDate\" : \"2025-03-03\",\n    \"endDate\" : \"2025-03-10\",\n    \"amountPerHr\" : 40,\n    \"startTime\" : 10,\n    \"endTime\" : 18,\n    \"jobDescription\" : \"Requirement for web developer\",\n    \"userId\" : \"19600d02-2824-478b-85d8-03009614d32d\"\n}",
 									"options": {
 										"raw": {
 											"language": "json"
@@ -381,7 +416,7 @@
 									}
 								},
 								"url": {
-									"raw": "{{local}}/api/v1/job/create?userId=343185d7-9ffc-432e-a526-8c90b51ecdbb",
+									"raw": "{{local}}/api/v1/job/create",
 									"host": [
 										"{{local}}"
 									],
@@ -394,7 +429,8 @@
 									"query": [
 										{
 											"key": "userId",
-											"value": "343185d7-9ffc-432e-a526-8c90b51ecdbb"
+											"value": "343185d7-9ffc-432e-a526-8c90b51ecdbb",
+											"disabled": true
 										}
 									]
 								}
@@ -413,15 +449,15 @@
 								},
 								{
 									"key": "Content-Length",
-									"value": "471"
+									"value": "538"
 								},
 								{
 									"key": "ETag",
-									"value": "W/\"1d7-LzlPyuWC+0nHjyqXGFWxqvNsRv4\""
+									"value": "W/\"21a-PUtNUDDk0Wn06bMltrxeoBZt67U\""
 								},
 								{
 									"key": "Date",
-									"value": "Tue, 04 Mar 2025 05:58:18 GMT"
+									"value": "Fri, 07 Mar 2025 11:24:03 GMT"
 								},
 								{
 									"key": "Connection",
@@ -433,17 +469,99 @@
 								}
 							],
 							"cookie": [],
-							"body": "{\n    \"status\": 201,\n    \"errorCode\": \"\",\n    \"message\": \"Resource was created successfully.\",\n    \"data\": {\n        \"id\": \"87a5e71e-a7fb-447c-ab7c-9578ceeb814d\",\n        \"isAccepted\": false,\n        \"title\": \"web developer\",\n        \"startDate\": \"2025-03-02T18:30:00.000Z\",\n        \"endDate\": \"2025-03-09T18:30:00.000Z\",\n        \"amountPerHr\": 40,\n        \"startTime\": 10,\n        \"endTime\": 18,\n        \"totalAmount\": \"2560\",\n        \"createdBy\": \"343185d7-9ffc-432e-a526-8c90b51ecdbb\",\n        \"updatedAt\": \"2025-03-04T00:28:18.936Z\",\n        \"createdAt\": \"2025-03-04T00:28:18.936Z\",\n        \"deletedAt\": null\n    },\n    \"error\": \"\"\n}"
+							"body": "{\n    \"status\": 201,\n    \"errorCode\": \"\",\n    \"message\": \"Resource was created successfully.\",\n    \"data\": {\n        \"id\": \"b9593bcc-cbeb-4d52-a451-23c7924a6b99\",\n        \"isAccepted\": false,\n        \"isDeleted\": false,\n        \"title\": \"web developer\",\n        \"startDate\": \"2025-03-02T18:30:00.000Z\",\n        \"endDate\": \"2025-03-09T18:30:00.000Z\",\n        \"amountPerHr\": 40,\n        \"startTime\": 10,\n        \"endTime\": 18,\n        \"jobDescription\": \"Requirement for web developer\",\n        \"totalAmount\": \"2560\",\n        \"createdBy\": \"19600d02-2824-478b-85d8-03009614d32d\",\n        \"updatedAt\": \"2025-03-07T05:54:03.853Z\",\n        \"createdAt\": \"2025-03-07T05:54:03.853Z\",\n        \"deletedAt\": null\n    },\n    \"error\": \"\"\n}"
+						},
+						{
+							"name": "create job",
+							"originalRequest": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"title\" : \"python intern\",\n    \"startDate\" : \"2025-03-03\",\n    \"endDate\" : \"2025-03-10\",\n    \"amountPerHr\" : 40,\n    \"startTime\" : 10,\n    \"endTime\" : 18,\n    \"jobDescription\" : \"Requirement for web developer\",\n    \"userId\" : \"19600d02-2824-478b-85d8-03009614d32d\"\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{local}}/api/v1/job/create",
+									"host": [
+										"{{local}}"
+									],
+									"path": [
+										"api",
+										"v1",
+										"job",
+										"create"
+									],
+									"query": [
+										{
+											"key": "userId",
+											"value": "343185d7-9ffc-432e-a526-8c90b51ecdbb",
+											"disabled": true
+										}
+									]
+								}
+							},
+							"status": "Created",
+							"code": 201,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "X-Powered-By",
+									"value": "Express"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json; charset=utf-8"
+								},
+								{
+									"key": "Content-Length",
+									"value": "538"
+								},
+								{
+									"key": "ETag",
+									"value": "W/\"21a-Y8ZJvmeIZUeBJuqoT4qIMyds8a4\""
+								},
+								{
+									"key": "Date",
+									"value": "Fri, 07 Mar 2025 11:24:20 GMT"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								},
+								{
+									"key": "Keep-Alive",
+									"value": "timeout=5"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"status\": 201,\n    \"errorCode\": \"\",\n    \"message\": \"Resource was created successfully.\",\n    \"data\": {\n        \"id\": \"31bdbc70-b13f-40f5-8f73-ccb49c52a8bd\",\n        \"isAccepted\": false,\n        \"isDeleted\": false,\n        \"title\": \"python intern\",\n        \"startDate\": \"2025-03-02T18:30:00.000Z\",\n        \"endDate\": \"2025-03-09T18:30:00.000Z\",\n        \"amountPerHr\": 40,\n        \"startTime\": 10,\n        \"endTime\": 18,\n        \"jobDescription\": \"Requirement for web developer\",\n        \"totalAmount\": \"2560\",\n        \"createdBy\": \"19600d02-2824-478b-85d8-03009614d32d\",\n        \"updatedAt\": \"2025-03-07T05:54:20.811Z\",\n        \"createdAt\": \"2025-03-07T05:54:20.811Z\",\n        \"deletedAt\": null\n    },\n    \"error\": \"\"\n}"
 						}
 					]
 				},
 				{
 					"name": "list jobs",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
 					"request": {
 						"method": "GET",
 						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"page\" : 1,\n    \"size\" : 2\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
 						"url": {
-							"raw": "{{local}}/api/v1/job/list",
+							"raw": "{{local}}/api/v1/job/listjobsforuser",
 							"host": [
 								"{{local}}"
 							],
@@ -451,7 +569,7 @@
 								"api",
 								"v1",
 								"job",
-								"list"
+								"listjobsforuser"
 							]
 						}
 					},
@@ -461,8 +579,17 @@
 							"originalRequest": {
 								"method": "GET",
 								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"page\" : 1,\n    \"size\" : 2\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
 								"url": {
-									"raw": "{{local}}/api/v1/job/list",
+									"raw": "{{local}}/api/v1/job/listjobsforuser",
 									"host": [
 										"{{local}}"
 									],
@@ -470,7 +597,7 @@
 										"api",
 										"v1",
 										"job",
-										"list"
+										"listjobsforuser"
 									]
 								}
 							},
@@ -488,15 +615,15 @@
 								},
 								{
 									"key": "Content-Length",
-									"value": "459"
+									"value": "976"
 								},
 								{
 									"key": "ETag",
-									"value": "W/\"1cb-Xkyp9+wmJ5XVSgeXlYooSdZLq1k\""
+									"value": "W/\"3d0-jhkzDsofZFWlbYntaSrnq3DTH5o\""
 								},
 								{
 									"key": "Date",
-									"value": "Tue, 04 Mar 2025 05:34:28 GMT"
+									"value": "Fri, 07 Mar 2025 11:25:09 GMT"
 								},
 								{
 									"key": "Connection",
@@ -508,7 +635,7 @@
 								}
 							],
 							"cookie": [],
-							"body": "{\n    \"status\": 200,\n    \"errorCode\": \"\",\n    \"message\": \"Request was successful.\",\n    \"data\": [\n        {\n            \"id\": \"7e5e5c96-f23c-4d50-984b-493d11f64699\",\n            \"title\": \"Mern stack\",\n            \"startDate\": \"2025-03-02T18:30:00.000Z\",\n            \"endDate\": \"2025-03-09T18:30:00.000Z\",\n            \"amountPerHr\": 50,\n            \"startTime\": 10,\n            \"endTime\": 18,\n            \"totalAmount\": \"3200\",\n            \"isAccepted\": false,\n            \"createdBy\": \"343185d7-9ffc-432e-a526-8c90b51ecdbb\",\n            \"createdAt\": \"2025-03-04T00:00:48.490Z\",\n            \"updatedAt\": \"2025-03-04T00:00:48.490Z\",\n            \"deletedAt\": null\n        }\n    ],\n    \"error\": \"\"\n}"
+							"body": "{\n    \"status\": 200,\n    \"errorCode\": \"\",\n    \"message\": \"Request was successful.\",\n    \"data\": [\n        {\n            \"id\": \"31bdbc70-b13f-40f5-8f73-ccb49c52a8bd\",\n            \"title\": \"python intern\",\n            \"startDate\": \"2025-03-02T18:30:00.000Z\",\n            \"endDate\": \"2025-03-09T18:30:00.000Z\",\n            \"amountPerHr\": 40,\n            \"startTime\": 10,\n            \"endTime\": 18,\n            \"totalAmount\": \"2560\",\n            \"jobDescription\": \"Requirement for web developer\",\n            \"isAccepted\": false,\n            \"isDeleted\": false,\n            \"createdBy\": \"19600d02-2824-478b-85d8-03009614d32d\",\n            \"createdAt\": \"2025-03-07T05:54:20.811Z\",\n            \"updatedAt\": \"2025-03-07T05:54:20.811Z\",\n            \"deletedAt\": null\n        },\n        {\n            \"id\": \"cf3eb87d-9c63-43cd-8fb7-ed3a44aa12bc\",\n            \"title\": \"python developer\",\n            \"startDate\": \"2025-03-02T18:30:00.000Z\",\n            \"endDate\": \"2025-03-09T18:30:00.000Z\",\n            \"amountPerHr\": 40,\n            \"startTime\": 10,\n            \"endTime\": 18,\n            \"totalAmount\": \"2560\",\n            \"jobDescription\": \"Requirement for web developer\",\n            \"isAccepted\": false,\n            \"isDeleted\": false,\n            \"createdBy\": \"19600d02-2824-478b-85d8-03009614d32d\",\n            \"createdAt\": \"2025-03-07T05:54:14.219Z\",\n            \"updatedAt\": \"2025-03-07T05:54:14.219Z\",\n            \"deletedAt\": null\n        }\n    ],\n    \"error\": \"\"\n}"
 						}
 					]
 				},
@@ -519,7 +646,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n    \"userId\" : \"698f2737-327b-457d-bf19-00df5993dad2\",\n    \"title\" : \"Mern stack\",\n    \"startDate\" : \"2025-03-03\",\n    \"endDate\" : \"2025-03-10\",\n    \"amountPerHr\" : 50,\n    \"startTime\" : 10,\n    \"endTime\" : 18,\n    \"jobDescription\" : \"Requirement for Mern stack\"\n}",
+							"raw": "{\n    \"userId\" :\"62635fc6-8e5e-4efa-9c64-eeb6d0857719\",\n    \"startDate\" : \"2025-03-03\",\n    \"endDate\" : \"2025-03-10\",\n    \"amountPerHr\" : 30,\n    \"startTime\" : 10,\n    \"endTime\" : 18,\n    \"jobId\" : \"b9593bcc-cbeb-4d52-a451-23c7924a6b99\"\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -527,7 +654,7 @@
 							}
 						},
 						"url": {
-							"raw": "{{local}}/api/v1/job/applyforjob?jobId=7e5e5c96-f23c-4d50-984b-493d11f64699",
+							"raw": "{{local}}/api/v1/job/applyforjob",
 							"host": [
 								"{{local}}"
 							],
@@ -539,8 +666,9 @@
 							],
 							"query": [
 								{
-									"key": "jobId",
-									"value": "7e5e5c96-f23c-4d50-984b-493d11f64699"
+									"key": "",
+									"value": null,
+									"disabled": true
 								}
 							]
 						}
@@ -553,7 +681,7 @@
 								"header": [],
 								"body": {
 									"mode": "raw",
-									"raw": "{\n    \"userId\" : \"872fcdcf-0e94-4808-96e5-7b39f2b4dd23\",\n    \"title\" : \"Mern stack\",\n    \"startDate\" : \"2025-03-03\",\n    \"endDate\" : \"2025-03-10\",\n    \"amountPerHr\" : 30,\n    \"startTime\" : 10,\n    \"endTime\" : 18,\n    \"jobDescription\" : \"Requirement for Mern stack\"\n}",
+									"raw": "{\n    \"userId\" :\"5a66fd34-b93c-4baa-937b-4b56c4782470\",\n    \"startDate\" : \"2025-03-03\",\n    \"endDate\" : \"2025-03-10\",\n    \"amountPerHr\" : 60,\n    \"startTime\" : 10,\n    \"endTime\" : 18,\n    \"jobId\" : \"b9593bcc-cbeb-4d52-a451-23c7924a6b99\"\n}",
 									"options": {
 										"raw": {
 											"language": "json"
@@ -561,7 +689,7 @@
 									}
 								},
 								"url": {
-									"raw": "{{local}}/api/v1/job/applyforjob?jobId=7e5e5c96-f23c-4d50-984b-493d11f64699",
+									"raw": "{{local}}/api/v1/job/applyforjob",
 									"host": [
 										"{{local}}"
 									],
@@ -573,8 +701,9 @@
 									],
 									"query": [
 										{
-											"key": "jobId",
-											"value": "7e5e5c96-f23c-4d50-984b-493d11f64699"
+											"key": "",
+											"value": null,
+											"disabled": true
 										}
 									]
 								}
@@ -593,15 +722,15 @@
 								},
 								{
 									"key": "Content-Length",
-									"value": "482"
+									"value": "485"
 								},
 								{
 									"key": "ETag",
-									"value": "W/\"1e2-qnAqVob28uvgK5FODfKPRIXmz88\""
+									"value": "W/\"1e5-LqEUnW+cqhGwCrU2XX/HVwAzjNY\""
 								},
 								{
 									"key": "Date",
-									"value": "Tue, 04 Mar 2025 05:32:12 GMT"
+									"value": "Fri, 07 Mar 2025 11:27:09 GMT"
 								},
 								{
 									"key": "Connection",
@@ -613,7 +742,7 @@
 								}
 							],
 							"cookie": [],
-							"body": "{\n    \"status\": 200,\n    \"errorCode\": \"\",\n    \"message\": \"Request was successful.\",\n    \"data\": {\n        \"id\": \"3a646e20-2450-4e00-b921-818c3bd0dfad\",\n        \"isAccepted\": false,\n        \"userId\": \"872fcdcf-0e94-4808-96e5-7b39f2b4dd23\",\n        \"startDate\": \"2025-03-02T18:30:00.000Z\",\n        \"endDate\": \"2025-03-09T18:30:00.000Z\",\n        \"amountPerHr\": \"30\",\n        \"startTime\": 10,\n        \"endTime\": 18,\n        \"jobId\": \"7e5e5c96-f23c-4d50-984b-493d11f64699\",\n        \"totalAmount\": \"1920\",\n        \"updatedAt\": \"2025-03-04T00:02:12.220Z\",\n        \"createdAt\": \"2025-03-04T00:02:12.220Z\",\n        \"deletedAt\": null\n    },\n    \"error\": \"\"\n}"
+							"body": "{\n    \"status\": 200,\n    \"errorCode\": \"\",\n    \"message\": \"Request was successful.\",\n    \"data\": {\n        \"id\": \"e61b8a55-c968-4ea6-b06c-b7679a8c3e9a\",\n        \"jobStatus\": \"panding\",\n        \"userId\": \"5a66fd34-b93c-4baa-937b-4b56c4782470\",\n        \"startDate\": \"2025-03-02T18:30:00.000Z\",\n        \"endDate\": \"2025-03-09T18:30:00.000Z\",\n        \"amountPerHr\": \"60\",\n        \"startTime\": 10,\n        \"endTime\": 18,\n        \"jobId\": \"b9593bcc-cbeb-4d52-a451-23c7924a6b99\",\n        \"totalAmount\": \"3840\",\n        \"updatedAt\": \"2025-03-07T05:57:09.370Z\",\n        \"createdAt\": \"2025-03-07T05:57:09.370Z\",\n        \"deletedAt\": null\n    },\n    \"error\": \"\"\n}"
 						},
 						{
 							"name": "apply for job",
@@ -622,7 +751,7 @@
 								"header": [],
 								"body": {
 									"mode": "raw",
-									"raw": "{\n    \"userId\" : \"698f2737-327b-457d-bf19-00df5993dad2\",\n    \"title\" : \"Mern stack\",\n    \"startDate\" : \"2025-03-03\",\n    \"endDate\" : \"2025-03-10\",\n    \"amountPerHr\" : 50,\n    \"startTime\" : 10,\n    \"endTime\" : 18,\n    \"jobDescription\" : \"Requirement for Mern stack\"\n}",
+									"raw": "{\n    \"userId\" :\"62635fc6-8e5e-4efa-9c64-eeb6d0857719\",\n    \"startDate\" : \"2025-03-03\",\n    \"endDate\" : \"2025-03-10\",\n    \"amountPerHr\" : 30,\n    \"startTime\" : 10,\n    \"endTime\" : 18,\n    \"jobId\" : \"b9593bcc-cbeb-4d52-a451-23c7924a6b99\"\n}",
 									"options": {
 										"raw": {
 											"language": "json"
@@ -630,7 +759,7 @@
 									}
 								},
 								"url": {
-									"raw": "{{local}}/api/v1/job/applyforjob?jobId=7e5e5c96-f23c-4d50-984b-493d11f64699",
+									"raw": "{{local}}/api/v1/job/applyforjob",
 									"host": [
 										"{{local}}"
 									],
@@ -642,8 +771,9 @@
 									],
 									"query": [
 										{
-											"key": "jobId",
-											"value": "7e5e5c96-f23c-4d50-984b-493d11f64699"
+											"key": "",
+											"value": null,
+											"disabled": true
 										}
 									]
 								}
@@ -662,15 +792,15 @@
 								},
 								{
 									"key": "Content-Length",
-									"value": "482"
+									"value": "485"
 								},
 								{
 									"key": "ETag",
-									"value": "W/\"1e2-xQXQgtO+5iNsDiInejJwj3zTJgg\""
+									"value": "W/\"1e5-l2rXZjOjqaka/xNewaksRIxjjzo\""
 								},
 								{
 									"key": "Date",
-									"value": "Tue, 04 Mar 2025 05:34:12 GMT"
+									"value": "Fri, 07 Mar 2025 11:27:52 GMT"
 								},
 								{
 									"key": "Connection",
@@ -682,7 +812,7 @@
 								}
 							],
 							"cookie": [],
-							"body": "{\n    \"status\": 200,\n    \"errorCode\": \"\",\n    \"message\": \"Request was successful.\",\n    \"data\": {\n        \"id\": \"355f3689-7c4a-4855-a397-f14b23c2c5f6\",\n        \"isAccepted\": false,\n        \"userId\": \"698f2737-327b-457d-bf19-00df5993dad2\",\n        \"startDate\": \"2025-03-02T18:30:00.000Z\",\n        \"endDate\": \"2025-03-09T18:30:00.000Z\",\n        \"amountPerHr\": \"50\",\n        \"startTime\": 10,\n        \"endTime\": 18,\n        \"jobId\": \"7e5e5c96-f23c-4d50-984b-493d11f64699\",\n        \"totalAmount\": \"3200\",\n        \"updatedAt\": \"2025-03-04T00:04:12.455Z\",\n        \"createdAt\": \"2025-03-04T00:04:12.455Z\",\n        \"deletedAt\": null\n    },\n    \"error\": \"\"\n}"
+							"body": "{\n    \"status\": 200,\n    \"errorCode\": \"\",\n    \"message\": \"Request was successful.\",\n    \"data\": {\n        \"id\": \"4029130e-5bbc-4952-811a-657c47c2aae8\",\n        \"jobStatus\": \"panding\",\n        \"userId\": \"62635fc6-8e5e-4efa-9c64-eeb6d0857719\",\n        \"startDate\": \"2025-03-02T18:30:00.000Z\",\n        \"endDate\": \"2025-03-09T18:30:00.000Z\",\n        \"amountPerHr\": \"30\",\n        \"startTime\": 10,\n        \"endTime\": 18,\n        \"jobId\": \"b9593bcc-cbeb-4d52-a451-23c7924a6b99\",\n        \"totalAmount\": \"1920\",\n        \"updatedAt\": \"2025-03-07T05:57:52.876Z\",\n        \"createdAt\": \"2025-03-07T05:57:52.876Z\",\n        \"deletedAt\": null\n    },\n    \"error\": \"\"\n}"
 						}
 					]
 				},
@@ -693,7 +823,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n    \"jobId\": \"7e5e5c96-f23c-4d50-984b-493d11f64699\",\n    \"userId\": \"872fcdcf-0e94-4808-96e5-7b39f2b4dd23\",\n    \"startDate\": \"2025-03-02T18:30:00.000Z\",\n    \"endDate\": \"2025-03-09T18:30:00.000Z\"\n}",
+							"raw": "{\n    \"jobId\": \"b9593bcc-cbeb-4d52-a451-23c7924a6b99\",\n    \"userId\": \"62635fc6-8e5e-4efa-9c64-eeb6d0857719\",\n    \"creatorId\" : \"19600d02-2824-478b-85d8-03009614d32d\"\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -721,7 +851,7 @@
 								"header": [],
 								"body": {
 									"mode": "raw",
-									"raw": "{\n    \"jobId\": \"7e5e5c96-f23c-4d50-984b-493d11f64699\",\n    \"userId\": \"872fcdcf-0e94-4808-96e5-7b39f2b4dd23\",\n    \"startDate\": \"2025-03-02T18:30:00.000Z\",\n    \"endDate\": \"2025-03-09T18:30:00.000Z\"\n}",
+									"raw": "{\n    \"jobId\": \"b9593bcc-cbeb-4d52-a451-23c7924a6b99\",\n    \"userId\": \"62635fc6-8e5e-4efa-9c64-eeb6d0857719\",\n    \"creatorId\" : \"19600d02-2824-478b-85d8-03009614d32d\"\n}",
 									"options": {
 										"raw": {
 											"language": "json"
@@ -755,15 +885,15 @@
 								},
 								{
 									"key": "Content-Length",
-									"value": "395"
+									"value": "76"
 								},
 								{
 									"key": "ETag",
-									"value": "W/\"18b-U4+2oaZNo3KM033uHkrePGq/QZ4\""
+									"value": "W/\"4c-Sz8VRojUDT0Fh09sCreSp7zGykI\""
 								},
 								{
 									"key": "Date",
-									"value": "Tue, 04 Mar 2025 05:55:58 GMT"
+									"value": "Fri, 07 Mar 2025 12:01:27 GMT"
 								},
 								{
 									"key": "Connection",
@@ -775,7 +905,7 @@
 								}
 							],
 							"cookie": [],
-							"body": "{\n    \"status\": 200,\n    \"errorCode\": \"\",\n    \"message\": \"Request was successful.\",\n    \"data\": {\n        \"id\": \"fdb80ed5-9f8e-4dbb-848f-638e2cadf744\",\n        \"userId\": \"872fcdcf-0e94-4808-96e5-7b39f2b4dd23\",\n        \"jobId\": \"7e5e5c96-f23c-4d50-984b-493d11f64699\",\n        \"startDate\": \"2025-03-02T13:00:00.000Z\",\n        \"endDate\": \"2025-03-09T13:00:00.000Z\",\n        \"updatedAt\": \"2025-03-04T00:25:58.619Z\",\n        \"createdAt\": \"2025-03-04T00:25:58.619Z\",\n        \"deletedAt\": null\n    },\n    \"error\": \"\"\n}"
+							"body": "{\n    \"status\": 200,\n    \"errorCode\": \"\",\n    \"message\": \"job accepted\",\n    \"data\": [\n        1\n    ],\n    \"error\": \"\"\n}"
 						}
 					]
 				},
@@ -786,7 +916,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n    \"jobId\": \"87a5e71e-a7fb-447c-ab7c-9578ceeb814d\",\n    \"isAccepted\": false,\n    \"title\": \"web developer 11\",\n    \"startDate\": \"2025-03-02T18:30:00.000Z\",\n    \"endDate\": \"2025-03-09T18:30:00.000Z\",\n    \"amountPerHr\": 44,\n    \"startTime\": 10,\n    \"endTime\": 18,\n    \"jobDescription\": \"Requirement for web developer\"\n}",
+							"raw": "{\n    \"jobId\": \"31bdbc70-b13f-40f5-8f73-ccb49c52a8bd\",\n    \"isAccepted\": false,\n    \"title\": \"full stack developer\",\n    \"startDate\": \"2025-03-02T18:30:00.000Z\",\n    \"endDate\": \"2025-03-09T18:30:00.000Z\",\n    \"amountPerHr\": 44,\n    \"startTime\": 10,\n    \"endTime\": 18,\n    \"jobDescription\": \"Requirement for full stack developer\",\n    \"userId\" :\"19600d02-2824-478b-85d8-03009614d32d\"\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -794,7 +924,7 @@
 							}
 						},
 						"url": {
-							"raw": "{{local}}/api/v1/job/updatejob?userId=343185d7-9ffc-432e-a526-8c90b51ecdbb",
+							"raw": "{{local}}/api/v1/job/updatejob",
 							"host": [
 								"{{local}}"
 							],
@@ -807,7 +937,8 @@
 							"query": [
 								{
 									"key": "userId",
-									"value": "343185d7-9ffc-432e-a526-8c90b51ecdbb"
+									"value": "343185d7-9ffc-432e-a526-8c90b51ecdbb",
+									"disabled": true
 								}
 							]
 						}
@@ -820,7 +951,7 @@
 								"header": [],
 								"body": {
 									"mode": "raw",
-									"raw": "{\n    \"jobId\": \"87a5e71e-a7fb-447c-ab7c-9578ceeb814d\",\n    \"isAccepted\": false,\n    \"title\": \"web developer 11\",\n    \"startDate\": \"2025-03-02T18:30:00.000Z\",\n    \"endDate\": \"2025-03-09T18:30:00.000Z\",\n    \"amountPerHr\": 44,\n    \"startTime\": 10,\n    \"endTime\": 18,\n    \"jobDescription\": \"Requirement for web developer\"\n}",
+									"raw": "{\n    \"jobId\": \"31bdbc70-b13f-40f5-8f73-ccb49c52a8bd\",\n    \"isAccepted\": false,\n    \"title\": \"full stack developer\",\n    \"startDate\": \"2025-03-02T18:30:00.000Z\",\n    \"endDate\": \"2025-03-09T18:30:00.000Z\",\n    \"amountPerHr\": 44,\n    \"startTime\": 10,\n    \"endTime\": 18,\n    \"jobDescription\": \"Requirement for full stack developer\",\n    \"userId\" :\"19600d02-2824-478b-85d8-03009614d32d\"\n}",
 									"options": {
 										"raw": {
 											"language": "json"
@@ -828,7 +959,7 @@
 									}
 								},
 								"url": {
-									"raw": "{{local}}/api/v1/job/updatejob?userId=343185d7-9ffc-432e-a526-8c90b51ecdbb",
+									"raw": "{{local}}/api/v1/job/updatejob",
 									"host": [
 										"{{local}}"
 									],
@@ -841,13 +972,14 @@
 									"query": [
 										{
 											"key": "userId",
-											"value": "343185d7-9ffc-432e-a526-8c90b51ecdbb"
+											"value": "343185d7-9ffc-432e-a526-8c90b51ecdbb",
+											"disabled": true
 										}
 									]
 								}
 							},
-							"status": "Created",
-							"code": 201,
+							"status": "OK",
+							"code": 200,
 							"_postman_previewlanguage": "json",
 							"header": [
 								{
@@ -860,15 +992,15 @@
 								},
 								{
 									"key": "Content-Length",
-									"value": "382"
+									"value": "316"
 								},
 								{
 									"key": "ETag",
-									"value": "W/\"17e-MVlykiNJ2QUpK+yVKbcf2cjnkMc\""
+									"value": "W/\"13c-oOn5QVIWhkfC5zLrC6BxHLZ+ewk\""
 								},
 								{
 									"key": "Date",
-									"value": "Tue, 04 Mar 2025 06:37:19 GMT"
+									"value": "Fri, 07 Mar 2025 12:06:31 GMT"
 								},
 								{
 									"key": "Connection",
@@ -880,7 +1012,7 @@
 								}
 							],
 							"cookie": [],
-							"body": "{\n    \"status\": 201,\n    \"errorCode\": \"\",\n    \"message\": \"Resource was created successfully.\",\n    \"data\": {\n        \"title\": \"web developer 11\",\n        \"startDate\": \"2025-03-02T18:30:00.000Z\",\n        \"endDate\": \"2025-03-09T18:30:00.000Z\",\n        \"amountPerHr\": 44,\n        \"startTime\": 10,\n        \"endTime\": 18,\n        \"jobDescription\": \"Requirement for web developer\",\n        \"totalAmount\": 2816,\n        \"isAccepted\": false,\n        \"createdBy\": \"343185d7-9ffc-432e-a526-8c90b51ecdbb\"\n    },\n    \"error\": \"\"\n}"
+							"body": "{\n    \"status\": 200,\n    \"errorCode\": \"\",\n    \"message\": \"job is updated successfully\",\n    \"data\": {\n        \"title\": \"full stack developer\",\n        \"startDate\": \"2025-03-02T18:30:00.000Z\",\n        \"endDate\": \"2025-03-09T18:30:00.000Z\",\n        \"amountPerHr\": 44,\n        \"startTime\": 10,\n        \"endTime\": 18,\n        \"jobDescription\": \"Requirement for full stack developer\",\n        \"totalAmount\": 2816\n    },\n    \"error\": \"\"\n}"
 						}
 					]
 				},
@@ -891,7 +1023,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n    \"userId\" : \"343185d7-9ffc-432e-a526-8c90b51ecdbb\",\n    \"jobId\" : \"87a5e71e-a7fb-447c-ab7c-9578ceeb814d\"\n}",
+							"raw": "{\n    \"userId\" : \"19600d02-2824-478b-85d8-03009614d32d\",\n    \"jobId\" : \"31bdbc70-b13f-40f5-8f73-ccb49c52a8bd\"\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -919,7 +1051,7 @@
 								"header": [],
 								"body": {
 									"mode": "raw",
-									"raw": "{\n    \"userId\" : \"343185d7-9ffc-432e-a526-8c90b51ecdbb\",\n    \"jobId\" : \"87a5e71e-a7fb-447c-ab7c-9578ceeb814d\"\n}",
+									"raw": "{\n    \"userId\" : \"19600d02-2824-478b-85d8-03009614d32d\",\n    \"jobId\" : \"31bdbc70-b13f-40f5-8f73-ccb49c52a8bd\"\n}",
 									"options": {
 										"raw": {
 											"language": "json"
@@ -961,7 +1093,7 @@
 								},
 								{
 									"key": "Date",
-									"value": "Tue, 04 Mar 2025 06:46:35 GMT"
+									"value": "Fri, 07 Mar 2025 12:07:55 GMT"
 								},
 								{
 									"key": "Connection",
@@ -974,6 +1106,740 @@
 							],
 							"cookie": [],
 							"body": "{\n    \"status\": 200,\n    \"errorCode\": \"\",\n    \"message\": \"Job deleted successfully\",\n    \"data\": \"\",\n    \"error\": \"\"\n}"
+						}
+					]
+				},
+				{
+					"name": "get user profile in job",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"jobId\" : \"b9593bcc-cbeb-4d52-a451-23c7924a6b99\",\n    \"userId\": \"5a66fd34-b93c-4baa-937b-4b56c4782470\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{local}}/api/v1/job/userprofile",
+							"host": [
+								"{{local}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"job",
+								"userprofile"
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "get user profile",
+							"originalRequest": {
+								"method": "GET",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"jobId\" : \"b9593bcc-cbeb-4d52-a451-23c7924a6b99\",\n    \"userId\": \"5a66fd34-b93c-4baa-937b-4b56c4782470\"\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{local}}/api/v1/job/userprofile",
+									"host": [
+										"{{local}}"
+									],
+									"path": [
+										"api",
+										"v1",
+										"job",
+										"userprofile"
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "X-Powered-By",
+									"value": "Express"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json; charset=utf-8"
+								},
+								{
+									"key": "Content-Length",
+									"value": "119"
+								},
+								{
+									"key": "ETag",
+									"value": "W/\"77-nkZ6xf+1A0xGIYHeLPGZ/VTnDDI\""
+								},
+								{
+									"key": "Date",
+									"value": "Fri, 07 Mar 2025 12:18:23 GMT"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								},
+								{
+									"key": "Keep-Alive",
+									"value": "timeout=5"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"status\": 200,\n    \"errorCode\": \"\",\n    \"message\": \" user profile is get successfully\",\n    \"data\": {\n        \"email\": \"two@gmail.com\"\n    },\n    \"error\": \"\"\n}"
+						}
+					]
+				},
+				{
+					"name": "view particular job details",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"jobId\" : \"b9593bcc-cbeb-4d52-a451-23c7924a6b99\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{local}}/api/v1/job/getjobdetails",
+							"host": [
+								"{{local}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"job",
+								"getjobdetails"
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "view particular job details",
+							"originalRequest": {
+								"method": "GET",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"jobId\" : \"b9593bcc-cbeb-4d52-a451-23c7924a6b99\"\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{local}}/api/v1/job/getjobdetails",
+									"host": [
+										"{{local}}"
+									],
+									"path": [
+										"api",
+										"v1",
+										"job",
+										"getjobdetails"
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "X-Powered-By",
+									"value": "Express"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json; charset=utf-8"
+								},
+								{
+									"key": "Content-Length",
+									"value": "532"
+								},
+								{
+									"key": "ETag",
+									"value": "W/\"214-d5rzvQv8WWYxzm7ToWpxGKL+GEI\""
+								},
+								{
+									"key": "Date",
+									"value": "Fri, 07 Mar 2025 12:18:55 GMT"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								},
+								{
+									"key": "Keep-Alive",
+									"value": "timeout=5"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"status\": 200,\n    \"errorCode\": \"\",\n    \"message\": \"get job details success fully\",\n    \"data\": {\n        \"id\": \"b9593bcc-cbeb-4d52-a451-23c7924a6b99\",\n        \"title\": \"web developer\",\n        \"startDate\": \"2025-03-02T18:30:00.000Z\",\n        \"endDate\": \"2025-03-09T18:30:00.000Z\",\n        \"amountPerHr\": 40,\n        \"startTime\": 10,\n        \"endTime\": 18,\n        \"totalAmount\": \"2560\",\n        \"jobDescription\": \"Requirement for web developer\",\n        \"isAccepted\": true,\n        \"isDeleted\": false,\n        \"createdBy\": \"19600d02-2824-478b-85d8-03009614d32d\",\n        \"createdAt\": \"2025-03-07T05:54:03.853Z\",\n        \"updatedAt\": \"2025-03-07T06:31:27.115Z\",\n        \"deletedAt\": null\n    },\n    \"error\": \"\"\n}"
+						}
+					]
+				},
+				{
+					"name": "all user in particular job",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"jobId\" : \"b9593bcc-cbeb-4d52-a451-23c7924a6b99\" \n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{local}}/api/v1/job/jobusersdetails",
+							"host": [
+								"{{local}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"job",
+								"jobusersdetails"
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "all user in particular job",
+							"originalRequest": {
+								"method": "GET",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"jobId\" : \"b9593bcc-cbeb-4d52-a451-23c7924a6b99\" \n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{local}}/api/v1/job/jobusersdetails",
+									"host": [
+										"{{local}}"
+									],
+									"path": [
+										"api",
+										"v1",
+										"job",
+										"jobusersdetails"
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "X-Powered-By",
+									"value": "Express"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json; charset=utf-8"
+								},
+								{
+									"key": "Content-Length",
+									"value": "891"
+								},
+								{
+									"key": "ETag",
+									"value": "W/\"37b-5JAsNIjm99uZtpz2tC4jL95+4b4\""
+								},
+								{
+									"key": "Date",
+									"value": "Fri, 07 Mar 2025 12:19:23 GMT"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								},
+								{
+									"key": "Keep-Alive",
+									"value": "timeout=5"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"status\": 200,\n    \"errorCode\": \"\",\n    \"message\": \"Request was successful.\",\n    \"data\": [\n        {\n            \"id\": \"4029130e-5bbc-4952-811a-657c47c2aae8\",\n            \"userId\": \"62635fc6-8e5e-4efa-9c64-eeb6d0857719\",\n            \"jobId\": \"b9593bcc-cbeb-4d52-a451-23c7924a6b99\",\n            \"startDate\": \"2025-03-02T18:30:00.000Z\",\n            \"endDate\": \"2025-03-09T18:30:00.000Z\",\n            \"amountPerHr\": \"30\",\n            \"startTime\": 10,\n            \"endTime\": 18,\n            \"totalAmount\": \"1920\",\n            \"jobStatus\": \"Accepted\",\n            \"createdAt\": \"2025-03-07T05:57:52.876Z\",\n            \"updatedAt\": \"2025-03-07T06:31:27.109Z\",\n            \"deletedAt\": null\n        },\n        {\n            \"id\": \"e61b8a55-c968-4ea6-b06c-b7679a8c3e9a\",\n            \"userId\": \"5a66fd34-b93c-4baa-937b-4b56c4782470\",\n            \"jobId\": \"b9593bcc-cbeb-4d52-a451-23c7924a6b99\",\n            \"startDate\": \"2025-03-02T18:30:00.000Z\",\n            \"endDate\": \"2025-03-09T18:30:00.000Z\",\n            \"amountPerHr\": \"60\",\n            \"startTime\": 10,\n            \"endTime\": 18,\n            \"totalAmount\": \"3840\",\n            \"jobStatus\": \"Rejected\",\n            \"createdAt\": \"2025-03-07T05:57:09.370Z\",\n            \"updatedAt\": \"2025-03-07T06:31:27.114Z\",\n            \"deletedAt\": null\n        }\n    ],\n    \"error\": \"\"\n}"
+						}
+					]
+				},
+				{
+					"name": "in which jobs user apply",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"userId\" : \"62635fc6-8e5e-4efa-9c64-eeb6d0857719\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{local}}/api/v1/job/userappliedjobs",
+							"host": [
+								"{{local}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"job",
+								"userappliedjobs"
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "in which jobs user appy",
+							"originalRequest": {
+								"method": "GET",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"userId\" : \"62635fc6-8e5e-4efa-9c64-eeb6d0857719\"\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{local}}/api/v1/job/userappliedjobs",
+									"host": [
+										"{{local}}"
+									],
+									"path": [
+										"api",
+										"v1",
+										"job",
+										"userappliedjobs"
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "X-Powered-By",
+									"value": "Express"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json; charset=utf-8"
+								},
+								{
+									"key": "Content-Length",
+									"value": "488"
+								},
+								{
+									"key": "ETag",
+									"value": "W/\"1e8-JF8aiV1WEp+tRtPUInLaZwhEY98\""
+								},
+								{
+									"key": "Date",
+									"value": "Fri, 07 Mar 2025 12:22:45 GMT"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								},
+								{
+									"key": "Keep-Alive",
+									"value": "timeout=5"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"status\": 200,\n    \"errorCode\": \"\",\n    \"message\": \"Request was successful.\",\n    \"data\": [\n        {\n            \"id\": \"4029130e-5bbc-4952-811a-657c47c2aae8\",\n            \"userId\": \"62635fc6-8e5e-4efa-9c64-eeb6d0857719\",\n            \"jobId\": \"b9593bcc-cbeb-4d52-a451-23c7924a6b99\",\n            \"startDate\": \"2025-03-02T18:30:00.000Z\",\n            \"endDate\": \"2025-03-09T18:30:00.000Z\",\n            \"amountPerHr\": \"30\",\n            \"startTime\": 10,\n            \"endTime\": 18,\n            \"totalAmount\": \"1920\",\n            \"jobStatus\": \"Accepted\",\n            \"createdAt\": \"2025-03-07T05:57:52.876Z\",\n            \"updatedAt\": \"2025-03-07T06:31:27.109Z\",\n            \"deletedAt\": null\n        }\n    ],\n    \"error\": \"\"\n}"
+						}
+					]
+				},
+				{
+					"name": "job payment",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"jobId\" : \"b9593bcc-cbeb-4d52-a451-23c7924a6b99\",\n    \"userId\" :\"62635fc6-8e5e-4efa-9c64-eeb6d0857719\",\n    \"totalWorkedDay\" : 5,\n    \"currency\" : \"inr\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{local}}/api/v1/job/jobpayment",
+							"host": [
+								"{{local}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"job",
+								"jobpayment"
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "job payment",
+							"originalRequest": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"jobId\" : \"b9593bcc-cbeb-4d52-a451-23c7924a6b99\",\n    \"userId\" :\"62635fc6-8e5e-4efa-9c64-eeb6d0857719\",\n    \"totalWorkedDay\" : 5,\n    \"currency\" : \"inr\"\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{local}}/api/v1/job/jobpayment",
+									"host": [
+										"{{local}}"
+									],
+									"path": [
+										"api",
+										"v1",
+										"job",
+										"jobpayment"
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "X-Powered-By",
+									"value": "Express"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json; charset=utf-8"
+								},
+								{
+									"key": "Content-Length",
+									"value": "1385"
+								},
+								{
+									"key": "ETag",
+									"value": "W/\"569-Uia2XcDIRqs9fu2yEcbKF1mdJt4\""
+								},
+								{
+									"key": "Date",
+									"value": "Fri, 07 Mar 2025 12:59:52 GMT"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								},
+								{
+									"key": "Keep-Alive",
+									"value": "timeout=5"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"status\": 200,\n    \"message\": \"your given card details is already exist\",\n    \"data\": {\n        \"paymentIntent\": {\n            \"id\": \"pi_3R00VHKYGMBDtBxu1LNdZB1s\",\n            \"object\": \"payment_intent\",\n            \"amount\": 120000,\n            \"amount_capturable\": 0,\n            \"amount_details\": {\n                \"tip\": {}\n            },\n            \"amount_received\": 120000,\n            \"application\": null,\n            \"application_fee_amount\": null,\n            \"automatic_payment_methods\": {\n                \"allow_redirects\": \"never\",\n                \"enabled\": true\n            },\n            \"canceled_at\": null,\n            \"cancellation_reason\": null,\n            \"capture_method\": \"automatic_async\",\n            \"client_secret\": \"pi_3R00VHKYGMBDtBxu1LNdZB1s_secret_KEnXzZUAzkUbRofJuVsyx48sX\",\n            \"confirmation_method\": \"automatic\",\n            \"created\": 1741352391,\n            \"currency\": \"inr\",\n            \"customer\": \"cus_RtmXZWIKKWF4qZ\",\n            \"description\": null,\n            \"invoice\": null,\n            \"last_payment_error\": null,\n            \"latest_charge\": \"ch_3R00VHKYGMBDtBxu1PeYvhkR\",\n            \"livemode\": false,\n            \"metadata\": {},\n            \"next_action\": null,\n            \"on_behalf_of\": null,\n            \"payment_method\": null,\n            \"payment_method_configuration_details\": {\n                \"id\": \"pmc_1QyrvMKYGMBDtBxuuuPB9HLD\",\n                \"parent\": null\n            },\n            \"payment_method_options\": {\n                \"card\": {\n                    \"installments\": null,\n                    \"mandate_options\": null,\n                    \"network\": null,\n                    \"request_three_d_secure\": \"automatic\"\n                },\n                \"link\": {\n                    \"persistent_token\": null\n                }\n            },\n            \"payment_method_types\": [\n                \"card\",\n                \"link\"\n            ],\n            \"processing\": null,\n            \"receipt_email\": null,\n            \"review\": null,\n            \"setup_future_usage\": null,\n            \"shipping\": null,\n            \"source\": \"card_1R00LxKYGMBDtBxumdOZr3uA\",\n            \"statement_descriptor\": null,\n            \"statement_descriptor_suffix\": null,\n            \"status\": \"succeeded\",\n            \"transfer_data\": null,\n            \"transfer_group\": null\n        }\n    }\n}"
+						}
+					]
+				}
+			]
+		},
+		{
+			"name": "payment",
+			"item": [
+				{
+					"name": "create customer",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"email\" : \"three@gmail.com\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{local}}/api/v1/payment/create-customer",
+							"host": [
+								"{{local}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"payment",
+								"create-customer"
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "create customer",
+							"originalRequest": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"email\" : \"three@gmail.com\"\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{local}}/api/v1/payment/create-customer",
+									"host": [
+										"{{local}}"
+									],
+									"path": [
+										"api",
+										"v1",
+										"payment",
+										"create-customer"
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "X-Powered-By",
+									"value": "Express"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json; charset=utf-8"
+								},
+								{
+									"key": "Content-Length",
+									"value": "584"
+								},
+								{
+									"key": "ETag",
+									"value": "W/\"248-hOC3WuHDqAx8Oq308XaArhIluGw\""
+								},
+								{
+									"key": "Date",
+									"value": "Fri, 07 Mar 2025 06:35:09 GMT"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								},
+								{
+									"key": "Keep-Alive",
+									"value": "timeout=5"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"status\": 200,\n    \"message\": \"customer id created successfully\",\n    \"data\": [\n        [\n            1\n        ],\n        {\n            \"id\": \"cus_RthuCHot331D4u\",\n            \"object\": \"customer\",\n            \"address\": null,\n            \"balance\": 0,\n            \"created\": 1741329308,\n            \"currency\": null,\n            \"default_source\": null,\n            \"delinquent\": false,\n            \"description\": null,\n            \"discount\": null,\n            \"email\": \"three@gmail.com\",\n            \"invoice_prefix\": \"289E361B\",\n            \"invoice_settings\": {\n                \"custom_fields\": null,\n                \"default_payment_method\": null,\n                \"footer\": null,\n                \"rendering_options\": null\n            },\n            \"livemode\": false,\n            \"metadata\": {},\n            \"name\": null,\n            \"next_invoice_sequence\": 1,\n            \"phone\": null,\n            \"preferred_locales\": [],\n            \"shipping\": null,\n            \"tax_exempt\": \"none\",\n            \"test_clock\": null\n        }\n    ]\n}"
+						}
+					]
+				},
+				{
+					"name": "add-card-and-payment",
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"customerId\": \"cus_RthuCHot331D4u\",\n    \"amount\" : 999999,\n    \"currency\" : \"usd\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{local}}/api/v1/payment/add-card-and-payment",
+							"host": [
+								"{{local}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"payment",
+								"add-card-and-payment"
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "add-card",
+							"originalRequest": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"customerId\": \"cus_RthuCHot331D4u\",\n    \"amount\" : 200,\n    \"currency\" : \"inr\"\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{local}}/api/v1/payment/add-card-and-payment",
+									"host": [
+										"{{local}}"
+									],
+									"path": [
+										"api",
+										"v1",
+										"payment",
+										"add-card-and-payment"
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "X-Powered-By",
+									"value": "Express"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json; charset=utf-8"
+								},
+								{
+									"key": "Content-Length",
+									"value": "1383"
+								},
+								{
+									"key": "ETag",
+									"value": "W/\"567-Q2zciEQh84mttbl53Wrv+qGaUWU\""
+								},
+								{
+									"key": "Date",
+									"value": "Fri, 07 Mar 2025 06:38:19 GMT"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								},
+								{
+									"key": "Keep-Alive",
+									"value": "timeout=5"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"status\": 200,\n    \"message\": \"your given card details is already exist\",\n    \"data\": {\n        \"paymentIntent\": {\n            \"id\": \"pi_3QzuY2KYGMBDtBxu0VhKYHmG\",\n            \"object\": \"payment_intent\",\n            \"amount\": 20000,\n            \"amount_capturable\": 0,\n            \"amount_details\": {\n                \"tip\": {}\n            },\n            \"amount_received\": 20000,\n            \"application\": null,\n            \"application_fee_amount\": null,\n            \"automatic_payment_methods\": {\n                \"allow_redirects\": \"never\",\n                \"enabled\": true\n            },\n            \"canceled_at\": null,\n            \"cancellation_reason\": null,\n            \"capture_method\": \"automatic_async\",\n            \"client_secret\": \"pi_3QzuY2KYGMBDtBxu0VhKYHmG_secret_jI6jpmJlEPTzHmt5FIbBHOFVk\",\n            \"confirmation_method\": \"automatic\",\n            \"created\": 1741329498,\n            \"currency\": \"inr\",\n            \"customer\": \"cus_RthuCHot331D4u\",\n            \"description\": null,\n            \"invoice\": null,\n            \"last_payment_error\": null,\n            \"latest_charge\": \"ch_3QzuY2KYGMBDtBxu0zeMUW9v\",\n            \"livemode\": false,\n            \"metadata\": {},\n            \"next_action\": null,\n            \"on_behalf_of\": null,\n            \"payment_method\": null,\n            \"payment_method_configuration_details\": {\n                \"id\": \"pmc_1QyrvMKYGMBDtBxuuuPB9HLD\",\n                \"parent\": null\n            },\n            \"payment_method_options\": {\n                \"card\": {\n                    \"installments\": null,\n                    \"mandate_options\": null,\n                    \"network\": null,\n                    \"request_three_d_secure\": \"automatic\"\n                },\n                \"link\": {\n                    \"persistent_token\": null\n                }\n            },\n            \"payment_method_types\": [\n                \"card\",\n                \"link\"\n            ],\n            \"processing\": null,\n            \"receipt_email\": null,\n            \"review\": null,\n            \"setup_future_usage\": null,\n            \"shipping\": null,\n            \"source\": \"card_1QzuXPKYGMBDtBxukjwiXLn4\",\n            \"statement_descriptor\": null,\n            \"statement_descriptor_suffix\": null,\n            \"status\": \"succeeded\",\n            \"transfer_data\": null,\n            \"transfer_group\": null\n        }\n    }\n}"
+						},
+						{
+							"name": "add-card",
+							"originalRequest": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"customerId\": \"cus_RthuCHot331D4u\",\n    \"amount\" : 999999,\n    \"currency\" : \"usd\"\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{local}}/api/v1/payment/add-card-and-payment",
+									"host": [
+										"{{local}}"
+									],
+									"path": [
+										"api",
+										"v1",
+										"payment",
+										"add-card-and-payment"
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "X-Powered-By",
+									"value": "Express"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json; charset=utf-8"
+								},
+								{
+									"key": "Content-Length",
+									"value": "2582"
+								},
+								{
+									"key": "ETag",
+									"value": "W/\"a16-Rt+DNbyyGUqjZGwAqr6UkBYTc/4\""
+								},
+								{
+									"key": "Date",
+									"value": "Fri, 07 Mar 2025 07:57:36 GMT"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								},
+								{
+									"key": "Keep-Alive",
+									"value": "timeout=5"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"status\": 200,\n    \"message\": \"payment successfully done\",\n    \"data\": {\n        \"customerSource\": {\n            \"id\": \"card_1QzvmjKYGMBDtBxuRiZDyGu1\",\n            \"object\": \"card\",\n            \"address_city\": null,\n            \"address_country\": null,\n            \"address_line1\": null,\n            \"address_line1_check\": null,\n            \"address_line2\": null,\n            \"address_state\": null,\n            \"address_zip\": null,\n            \"address_zip_check\": null,\n            \"allow_redisplay\": \"unspecified\",\n            \"brand\": \"Visa\",\n            \"country\": \"US\",\n            \"customer\": \"cus_RthuCHot331D4u\",\n            \"cvc_check\": \"pass\",\n            \"dynamic_last4\": null,\n            \"exp_month\": 3,\n            \"exp_year\": 2026,\n            \"fingerprint\": \"TOHZjh7GKdY2dYW3\",\n            \"funding\": \"credit\",\n            \"last4\": \"4242\",\n            \"metadata\": {},\n            \"name\": null,\n            \"regulated_status\": \"unregulated\",\n            \"tokenization_method\": null,\n            \"wallet\": null\n        },\n        \"updatedCustomer\": {\n            \"id\": \"cus_RthuCHot331D4u\",\n            \"object\": \"customer\",\n            \"address\": null,\n            \"balance\": 0,\n            \"created\": 1741329308,\n            \"currency\": null,\n            \"default_source\": \"card_1QzvmjKYGMBDtBxuRiZDyGu1\",\n            \"delinquent\": false,\n            \"description\": null,\n            \"discount\": null,\n            \"email\": \"three@gmail.com\",\n            \"invoice_prefix\": \"289E361B\",\n            \"invoice_settings\": {\n                \"custom_fields\": null,\n                \"default_payment_method\": null,\n                \"footer\": null,\n                \"rendering_options\": null\n            },\n            \"livemode\": false,\n            \"metadata\": {},\n            \"name\": null,\n            \"next_invoice_sequence\": 1,\n            \"phone\": null,\n            \"preferred_locales\": [],\n            \"shipping\": null,\n            \"tax_exempt\": \"none\",\n            \"test_clock\": null\n        },\n        \"paymentIntent\": {\n            \"id\": \"pi_3QzvmlKYGMBDtBxu0xjHoxWa\",\n            \"object\": \"payment_intent\",\n            \"amount\": 99999900,\n            \"amount_capturable\": 0,\n            \"amount_details\": {\n                \"tip\": {}\n            },\n            \"amount_received\": 99999900,\n            \"application\": null,\n            \"application_fee_amount\": null,\n            \"automatic_payment_methods\": {\n                \"allow_redirects\": \"never\",\n                \"enabled\": true\n            },\n            \"canceled_at\": null,\n            \"cancellation_reason\": null,\n            \"capture_method\": \"automatic_async\",\n            \"client_secret\": \"pi_3QzvmlKYGMBDtBxu0xjHoxWa_secret_DpsXWHiIxuiOeNJec3iwUjmdq\",\n            \"confirmation_method\": \"automatic\",\n            \"created\": 1741334255,\n            \"currency\": \"usd\",\n            \"customer\": \"cus_RthuCHot331D4u\",\n            \"description\": null,\n            \"invoice\": null,\n            \"last_payment_error\": null,\n            \"latest_charge\": \"ch_3QzvmlKYGMBDtBxu0ZsI1fzA\",\n            \"livemode\": false,\n            \"metadata\": {},\n            \"next_action\": null,\n            \"on_behalf_of\": null,\n            \"payment_method\": null,\n            \"payment_method_configuration_details\": {\n                \"id\": \"pmc_1QyrvMKYGMBDtBxuuuPB9HLD\",\n                \"parent\": null\n            },\n            \"payment_method_options\": {\n                \"amazon_pay\": {\n                    \"express_checkout_element_session_id\": null\n                },\n                \"card\": {\n                    \"installments\": null,\n                    \"mandate_options\": null,\n                    \"network\": null,\n                    \"request_three_d_secure\": \"automatic\"\n                },\n                \"link\": {\n                    \"persistent_token\": null\n                }\n            },\n            \"payment_method_types\": [\n                \"card\",\n                \"link\",\n                \"amazon_pay\"\n            ],\n            \"processing\": null,\n            \"receipt_email\": null,\n            \"review\": null,\n            \"setup_future_usage\": null,\n            \"shipping\": null,\n            \"source\": \"card_1QzvmjKYGMBDtBxuRiZDyGu1\",\n            \"statement_descriptor\": null,\n            \"statement_descriptor_suffix\": null,\n            \"status\": \"succeeded\",\n            \"transfer_data\": null,\n            \"transfer_group\": null\n        }\n    }\n}"
 						}
 					]
 				}
