@@ -8,7 +8,7 @@ const MESSAGES = require("../utils/Messages");
 const HTTP_STATUS_CODE = require("../utils/HttpStatusCodes");
 const JobApplicant = require("../models/JobApplicant");
 const User = require("../models/User");
-const { Op, where } = require("sequelize");
+const { Op } = require("sequelize");
 const sendBulkEmail = require("../helpers/mail/sendMail");
 const CardDetails = require("../models/CardDetails");
 
@@ -293,7 +293,10 @@ module.exports = {
               },
             }
           );
-        const jobDone =  await Job.update({ isAccepted: true }, { where: { id: jobId } }); // update isAccepted flag in Job
+          const jobDone = await Job.update(
+            { isAccepted: true },
+            { where: { id: jobId } }
+          ); // update isAccepted flag in Job
 
           const users = await JobApplicant.findAll({
             // find all user for send mail
@@ -311,13 +314,13 @@ module.exports = {
           });
 
           const acceptedEmails = users
-            .filter((applicant) => applicant.jobStatus == 'Accepted')
+            .filter((applicant) => applicant.jobStatus == "Accepted")
             .map((applicant) => applicant.user.dataValues.email);
-       
+
           const rejectedEmails = users
-            .filter((applicant) => applicant.jobStatus == 'Rejected')
+            .filter((applicant) => applicant.jobStatus == "Rejected")
             .map((applicant) => applicant.user.dataValues.email);
-          
+
           // Email content
           const subject = MESSAGES.MAIL_STATUS;
           const textAccepted = MESSAGES.MAIL_FOR_ACCEPTED;
@@ -714,11 +717,10 @@ module.exports = {
       const today = new Date();
       today.setHours(0, 0, 0, 0);
 
-      console.log(today.toDateString() === endDate.toDateString());
       if (today.toDateString() === endDate.toDateString()) {
         // Create Stripe PaymentIntent
         const checkCustomerId = await userIdCheckIndUser.stripeCustomerId;
-        
+
         if (checkCustomerId) {
           const token = await stripe.tokens.retrieve("tok_visa");
 
@@ -727,7 +729,6 @@ module.exports = {
             where: { cardLast4Digit: token.card.last4 },
           });
           if (!cardExist) {
-            console.log("111111");
             // Create new card entry in the database
             await CardDetails.create({
               cardId: token.card.id,
@@ -735,8 +736,7 @@ module.exports = {
               cardExpMonth: token.card.exp_month,
               cardLast4Digit: token.card.last4,
             });
-  
-            console.log("object");
+
             // Add card to the customer's Stripe account
             const customerSource = await stripe.customers.createSource(
               checkCustomerId,
@@ -744,11 +744,14 @@ module.exports = {
                 source: token.id,
               }
             );
-  
+
             // Set the new card as the default card for the customer
-            const updatedCustomer = await stripe.customers.update(customerId, {
-              default_source: customerSource.id,
-            });
+            const updatedCustomer = await stripe.customers.update(
+              checkCustomerId,
+              {
+                default_source: customerSource.id,
+              }
+            );
             const paymentIntent = await stripe.paymentIntents.create({
               amount: totalAmount * 100,
               currency: currency,
@@ -759,14 +762,20 @@ module.exports = {
                 allow_redirects: "never", // Avoid redirects
               },
             });
-  
+
             if (paymentIntent.status === "succeeded") {
-              await CardDetails.update({
-                paymentId: paymentIntent.id,
-                isPaymentDone: true,
-              }, {where : {
-                cardId: token.card.id,
-              }});
+              await CardDetails.update(
+                {
+                  paymentId: paymentIntent.id,
+                  isPaymentDone: true,
+                },
+                {
+                  where: {
+                    cardId: token.card.id,
+                  },
+                }
+              );
+
               return res.status(HTTP_STATUS_CODE.OK).json({
                 status: HTTP_STATUS_CODE.OK,
                 message: MESSAGES.PAYMENT_SUCCESSFULL,
@@ -785,7 +794,7 @@ module.exports = {
               });
             }
           }
-  
+
           // If the card already exists, create payment intent directly
           const paymentIntent = await stripe.paymentIntents.create({
             amount: totalAmount * 100,
@@ -797,13 +806,19 @@ module.exports = {
               allow_redirects: "never", // Avoid redirects
             },
           });
-          if (paymentIntent.status == 'succeeded') {
-            await CardDetails.update({
-              paymentId: paymentIntent.id,
-              isPaymentDone: true,
-            }, {where : {
-              cardId: token.card.id,
-            }});
+          if (paymentIntent.status == "succeeded") {
+            await CardDetails.update(
+              {
+                paymentId: paymentIntent.id,
+                isPaymentDone: true,
+              },
+              {
+                where: {
+                  cardId: token.card.id,
+                },
+              }
+            );
+
             return res.status(HTTP_STATUS_CODE.OK).json({
               status: HTTP_STATUS_CODE.OK,
               message: MESSAGES.CARD_ALREADY_EXIST,
@@ -820,7 +835,7 @@ module.exports = {
             });
           }
         }
-  
+        
         // if no customer id then return
         return res.status(HTTP_STATUS_CODE.BAD_REQUEST).json({
           status: HTTP_STATUS_CODE.BAD_REQUEST,
