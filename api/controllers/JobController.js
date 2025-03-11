@@ -11,6 +11,7 @@ const User = require("../models/User");
 const { Op } = require("sequelize");
 const sendBulkEmail = require("../helpers/mail/sendMail");
 const CardDetails = require("../models/CardDetails");
+const sequelize = require("../../config/database");
 
 const { STRIPE_PUBLISHABLE_KEY, STRIPE_SECRET_KEY } = process.env;
 const stripe = require("stripe")(STRIPE_SECRET_KEY);
@@ -97,24 +98,43 @@ module.exports = {
    */
   listJobs: async (req, res) => {
     try {
-      //pagination
+      // Pagination
       let { page, size } = req.body;
-      // Convert  to numbers and set defaults
+      // Convert to numbers and set defaults
       page = Number(page) || 1; // Default to page 1
       size = Number(size) || 10; // Default page size 10
       // Calculate offset
       let offset = (page - 1) * size;
       let limit = size;
 
-      const allJobs = await Job.findAll({
-        where: { isDeleted: false },
-        order: [["createdAt", "DESC"]],
-        offset: offset,
-        limit: limit,
-      });
+      // const allJobs = await Job.findAll({
+      //   where: { isDeleted: false },
+      //   order: [["createdAt", "DESC"]],
+      //   offset: offset,
+      //   limit: limit,
+      // });
 
-      if (!allJobs) {
-        return "No jobs Available";
+      // if (!allJobs) {
+      //   return "No jobs Available";
+      // }
+
+      // Query the job view instead of the Job model
+      const allJobs = await sequelize.query(
+        'SELECT * FROM job_view ORDER BY "createdAt" DESC LIMIT :limit OFFSET :offset',
+        {
+          replacements: { limit, offset },
+          type: sequelize.QueryTypes.SELECT, // Query type SELECT
+        }
+      );
+
+      if (!allJobs || allJobs.length === 0) {
+        return res.status(HTTP_STATUS_CODE.OK).json({
+          status: HTTP_STATUS_CODE.OK,
+          errorCode: "",
+          message: MESSAGES.JOB_NOT_FOUND,
+          data: [],
+          error: "",
+        });
       }
 
       return res.status(HTTP_STATUS_CODE.OK).json({
@@ -573,11 +593,19 @@ module.exports = {
   allUsesInParticularJob: async (req, res) => {
     try {
       const { jobId } = req.body;
-      const allJobApplicant = await JobApplicant.findAll({
-        where: {
-          jobId: jobId,
-        },
-      });
+      // const allJobApplicant = await JobApplicant.findAll({
+      //   where: {
+      //     jobId: jobId,
+      //   },
+      // });
+      // added view
+      const allJobApplicant = await sequelize.query(
+        'SELECT * FROM JobApplicantView WHERE "jobId" = "jobId"',
+        {
+          replacements: { jobId },
+          type: sequelize.QueryTypes.SELECT,
+        }
+      );
 
       return res.status(HTTP_STATUS_CODE.OK).json({
         status: HTTP_STATUS_CODE.OK,
@@ -835,7 +863,7 @@ module.exports = {
             });
           }
         }
-        
+
         // if no customer id then return
         return res.status(HTTP_STATUS_CODE.BAD_REQUEST).json({
           status: HTTP_STATUS_CODE.BAD_REQUEST,

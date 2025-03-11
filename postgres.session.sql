@@ -56,3 +56,32 @@
 --   "updatedAt" TIMESTAMP NOT NULL,
 --   "deletedAt" TIMESTAMP
 -- );
+
+--- create view  for job lists 
+
+-- CREATE VIEW job_view AS
+-- SELECT
+--     id,
+--     title,
+--     "amountPerHr",
+--     "totalAmount",
+--     "jobDescription",
+--     "isAccepted", "createdAt",
+--     "updatedAt"
+-- FROM jobs
+-- WHERE
+--     "isDeleted" = false;
+
+
+-- CREATE VIEW JobApplicantView AS
+-- SELECT ja.id AS applicantId, ja."jobId", ja."amountPerHr", ja."totalAmount", ja."jobStatus"
+-- FROM "jobApplicant" ja
+-- JOIN "jobs" j ON ja."jobId" = j.id;
+
+
+
+----- index -----
+
+-- CREATE INDEX job_title ON jobs(title)
+-- CREATE INDEX jobid ON "jobApplicant"("jobId")
+
