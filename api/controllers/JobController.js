@@ -188,11 +188,14 @@ module.exports = {
           },
         },
       });
+
+      // const checkJobId =  'CALL PROCEDURE check_job_id(jobId)';
+
       if (!checkJobId) {
         return res.status(HTTP_STATUS_CODE.BAD_REQUEST).json({
           status: HTTP_STATUS_CODE.BAD_REQUEST,
           errorCode: "",
-          message: MESSAGES.BAD_REQUEST,
+          message: MESSAGES.JOB_NOT_FOUND,
           data: "",
           error: "",
         });
@@ -637,8 +640,23 @@ module.exports = {
     try {
       const { jobId } = req.body;
       const findJobDetails = await Job.findOne({
-        where: { id: jobId, isDeleted: false },
+        where: {
+          [Op.and]: {
+            id: jobId,
+            isDeleted: false,
+          },
+        },
       });
+      if (!findJobDetails) {
+        return res.status(HTTP_STATUS_CODE.BAD_REQUEST).json({
+          status: HTTP_STATUS_CODE.BAD_REQUEST,
+          errorCode: "",
+          message: MESSAGES.JOB_NOT_FOUND,
+          data: "",
+          error: "",
+        });
+      }
+      // const findJobDetails =  'CALL PROCEDURE check_job_id("jobId")';
       return res.status(HTTP_STATUS_CODE.OK).json({
         status: HTTP_STATUS_CODE.OK,
         errorCode: "",

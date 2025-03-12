@@ -85,3 +85,15 @@
 -- CREATE INDEX job_title ON jobs(title)
 -- CREATE INDEX jobid ON "jobApplicant"("jobId")
 
+
+-------- stored procedure -------
+
+-- CREATE PROCEDURE  check_job_id(IN jobId VARCHAR) 
+-- LANGUAGE 'plpgsql'
+-- AS $$
+-- BEGIN
+--     SELECT *
+--     FROM jobs
+--     WHERE id = jobId AND "isDeleted" = false;
+-- END;
+-- $$ ;
